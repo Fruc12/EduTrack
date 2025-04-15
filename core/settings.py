@@ -71,8 +71,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME':'edutrack',
+        'USER': 'master',
+        'PASSWORD': 'passe',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
     }
 }
 
