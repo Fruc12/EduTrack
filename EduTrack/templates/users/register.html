@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+	<title>EduTrack - Inscription</title>
+	{% include "includes/head.html" %}
+</head>
+
+<!-- [ auth-signup ] start -->
+<div class="auth-wrapper">
+	<div class="auth-content text-center">
+		<img src="/static/assets/images/logo.png" alt="" class="img-fluid mb-4">
+		<div class="card borderless">
+			<div class="row align-items-center text-center">
+				<div class="col-md-12">
+					<div class="card-body">
+						<h4 class="f-w-400">Inscrivez-vous</h4>
+						<hr>
+						<form method="POST">
+
+							{% csrf_token %}
+					  
+							<div class="form-group">
+							  <div class="input-group input-group-alternative mb-3">
+								{{ form.first_name }}
+							  </div>
+							</div>
+							<div class="form-group">
+							  <div class="input-group input-group-alternative mb-3">
+								{{ form.last_name }}
+							  </div>
+							</div>
+							<span class="text-danger">{{ form.username.errors }}</span>
+		  
+							<div class="form-group">
+							  <div class="input-group input-group-alternative mb-3">
+								{{ form.email }}
+							  </div>
+							</div>
+							<span class="text-danger">{{ form.email.errors }}</span>
+		  
+							<div class="form-group">
+							  <div class="input-group input-group-alternative">
+								{{ form.password1 }}
+							  </div>
+							</div>
+							<span class="text-danger">{{ form.password1.errors }}</span>
+		  
+							<div class="form-group">
+							  <div class="input-group input-group-alternative">
+								{{ form.password2 }}
+							  </div>
+							</div>
+							<span class="text-danger">{{ form.password2.errors }}</span>
+
+							<div class="text-center">
+							  <button type="submit" class="btn btn-primary mt-4">S'inscrire</button>
+							</div>
+						</form>
+						<hr>
+						<p class="mb-2">Vous avez déja un compte ? <a href="{% url 'users:login' %}" class="f-w-400">Connectez-vous !</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- [ auth-signup ] end -->
+
+<!-- Required Js -->
+{% include "includes/scripts.html" %}
+
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title> EduTrack - {% block title %} Suivez vos enfants dans leur cursus ! {% endblock %} </title>
+
+    {% include "includes/head.html" %}
+    
+    <!-- Specific CSS goes HERE -->
+    {% block stylesheets %}{% endblock stylesheets %}
+</head>
+<body class="">
+    <!-- [ Pre-loader ] start -->
+    <div class="loader-bg">
+        <div class="loader-track">
+            <div class="loader-fill"></div>
+        </div>
+    </div>
+    <!-- [ Pre-loader ] End -->
+
+    {% include "includes/sidenav.html" %}
+
+    {% include "includes/header.html" %}
+
+    <!-- [ Main Content ] start -->
+    {% block content %}{% endblock content %}
+    <!-- [ Main Content ] end -->
+    
+    <!-- Required JS -->
+    {% include "includes/scripts.html" %}
+
+    <!-- Specific JS goes HERE --> 
+    {% block javascripts %}{% endblock javascripts %}
+</body>
+</html>

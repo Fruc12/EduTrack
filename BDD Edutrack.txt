@@ -1,0 +1,69 @@
+User:
+	id
+	email
+	password
+	role (school, parent)
+	created-at
+	updated-at
+School:
+	id
+	name
+	created_at
+	updated_at
+Class:
+	id
+	level
+	option
+	school_id
+	created_at
+	updated_at
+
+Course:
+	id
+	name
+	coef
+	class_id
+
+TimeTable :
+	id
+	course_id
+	day
+	begin_time
+	end_time
+
+Student:
+	id
+	name
+	class_id
+	parent_id
+
+Score:
+	id
+	student_id
+	course_id
+	type (control, exam)
+	ponderation
+	created_at
+
+CourseScore :
+	id
+	course_id
+	student_id
+	score
+	rank
+
+Bulletin :
+	id
+	score
+	rank
+	student_id
+
+Absence :
+	id
+	student_id
+	course_id
+	number
+	created_at
+	
+
+	
