@@ -5,7 +5,7 @@ from django.template import loader
 
 # @login_required(login_url="/accounts/login/")
 def homepage(request):
-    return render(request, 'index.html')
+    return redirect('schools:dashboard')
 
 @login_not_required
 def pages(request):
