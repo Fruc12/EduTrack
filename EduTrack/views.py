@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
 
-@login_required(login_url="/users/login/")
+# @login_required(login_url="/users/login/")
 def homepage(request):
     return render(request, 'index.html')
 
