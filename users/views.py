@@ -1,9 +1,10 @@
+from django.contrib.auth.decorators import login_not_required
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .forms import LoginForm, SignUpForm
 from django.contrib.auth import authenticate, login, logout
 # Create your views here.
 
+@login_not_required
 def login_user(request):
     form = msg = None
     context = {}
@@ -28,6 +29,7 @@ def login_user(request):
 
     return render(request, "users/login.html", context)
 
+@login_not_required
 def register_user(request):
     msg = form = None
 
