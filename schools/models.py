@@ -1,3 +1,13 @@
 from django.db import models
+from users.models import User
 
-# Create your models here.
+class School(models.Model):
+    PERIODS = [ ('','Sélectionnez une période'), ('trimester', 'Trimestre'), ('semester', 'Semestre') ]
+    name = models.CharField(max_length=50)
+    period = models.CharField(max_length=50, choices=PERIODS)
+
+class SchoolUser(models.Model):
+    ROLES = [ ('','Sélectionnez une un role'), ('director', 'Directeur'), ('staff', "Personnel d'administration")]
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='schoolUsers')
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='schoolUsers')
+    role = models.CharField(choices=ROLES, max_length=20)

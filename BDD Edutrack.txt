@@ -11,6 +11,12 @@ School:
 	name
 	created_at
 	updated_at
+SchoolUser:
+    id
+    user_id
+    school_id
+    role (director, staff)
+
 Class:
 	id
 	level
