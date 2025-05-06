@@ -1,0 +1,146 @@
+{% extends "layouts/base.html" %}
+{% load customtags %}
+{% block content %}
+    {% for message in messages %}
+        <p>{{ message }}</p>
+    {% endfor %}
+<div class="pcoded-main-container">
+    <div class="pcoded-content">
+
+        <!-- [ breadcrumb ] start -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <div>
+                <div class="page-header-title">
+                    <h5 class="m-b-10">{{ school.name }}</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'dashboard' %}">
+                            <i class="feather icon-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#!">Mes écoles / {{ school.name }}</a>
+                    </li>
+                </ul>
+            </div>
+            <a data-toggle="modal" data-target="#addClassroomModal" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-plus fa-sm text-white-50"></i> Ajouter une classe
+            </a>
+        </div>
+        <!-- [ breadcrumb ] end -->
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            {% for level,level_name in classroom.LEVELS|slice:"1:" %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">{{ level_name }}</h6>
+                        <button class="btn btn-sm btn-outline-primary" data-toggle="collapse" data-target="#cardBody{{ level }}" aria-expanded="false" aria-controls="cardBody1">
+                            <i class="feather icon-arrow-down"></i> Voir plus
+                        </button>
+                    </div>
+                    <div id="cardBody{{ level }}" class="collapse">
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nom de la classe</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% get_classes_by_level school level as classrooms %}
+                                {% for classroom in classrooms %}
+                                    <tr>
+                                        <td class="align-center text-center"> <a class="btn btn-sm btn-primary" href="{% url 'schools:classrooms:show' school.pk classroom.pk %}">{{ classroom.name }}</a></td>
+                                        <td class="align-center text-center">
+                                            <div class="card-header-right">
+                                                <div class="btn-group card-option">
+                                                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="feather icon-more-horizontal"></i>
+                                                    </button>
+                                                    <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                                                        <li class="dropdown-item"><a data-toggle="modal" data-target="#deleteClassroomModal" href="#!" onclick="setDeleteClassroomId({{ classroom.pk }})"><i class="feather icon-trash"></i>Supprimer</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+</div>
+    
+<!-- Modal d'ajout d'une classe -->
+<div class="modal fade" id="addClassroomModal" tabindex="-1" role="dialog"
+     aria-labelledby="addClassroomModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addClassroomModalLabel">Ajouter une nouvelle classe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                        <div class="form-group">
+                            {{ addForm.name }}
+                        </div>
+                        <span class="text-danger">{{ addForm.name.errors }}</span>
+                        <div class="form-group">
+                            {{ addForm.level }}
+                        </div>
+                        <span class="text-danger">{{ addForm.period.errors }}</span>
+                       <input type="hidden" name="school" value="{{ school.pk }}">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal suppression d'une classe-->
+<div class="modal fade" id="deleteClassroomModal" tabindex="-1" role="dialog" aria-labelledby="deleteClassroomModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteClassroomModalLabel">Vous allez tout perdre concernant cette classe</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Voulez-vous supprimer cette classe ?</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                <form method="POST" id="classroomDeleteForm">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-danger" value="Supprimer">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>    
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+    function setDeleteClassroomId(classId) {
+        const form = document.getElementById('classroomDeleteForm');
+        form.action = `/schools/{{ school.pk }}/classrooms/${classId}/delete/`;
+    }
+</script>
+{% endblock javascripts %}

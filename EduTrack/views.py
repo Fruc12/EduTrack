@@ -5,16 +5,10 @@ from django.template import loader
 
 # @login_required(login_url="/accounts/login/")
 def homepage(request):
-    return redirect('schools:dashboard')
-def classe_detail(request, classe_id):
-    context = {
-        'classe': {
-            'nom': 'CM2 A',
-            'annee_scolaire': '2023-2024'
-        },
-        'user': request.user
-    }
-    return render(request, 'classe_detail.html', context)
+    if request.user.role == "school":
+        return redirect('schools:dashboard')
+    else:
+        return redirect('parents:dashboard')
 
 @login_not_required
 def pages(request):

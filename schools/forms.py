@@ -14,7 +14,6 @@ class SchoolForm(forms.ModelForm):
         choices=School.PERIODS,
         widget=forms.Select(
             attrs={
-                "placeholder": "Mot de passe",
                 "class": "form-control"
             }
         ))

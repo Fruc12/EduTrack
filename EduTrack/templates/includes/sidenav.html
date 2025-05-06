@@ -24,10 +24,7 @@
                     <label>Navigation</label>
                 </li>
                 <li class="nav-item">
-                    <a href="{% url 'parents:dashboard' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'schools:dashboard' %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard-admin</span></a>
+                    <a href="{% if user.role == "school" %} {% url 'schools:dashboard' %} {% else %} {% url 'parents:dashboard' %} {% endif %}" class="nav-link "><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Dashboard</span></a>
                 </li>
                 {% if user.role == 'school' %}
                     <li class="nav-item pcoded-menu-caption">
@@ -35,7 +32,7 @@
                     </li>
                     {% for schoolUser in user.schoolUsers.all %}
                         <li class="nav-item">
-                            <a href="{% url 'schools:show' schoolUser.school.pk %}" class="nav-link "><span class="pcoded-micon"><i class="fa fa-school"></i></span><span class="pcoded-mtext">{{ schoolUser.school.name }}</span></a>
+                            <a href="{% url 'schools:classrooms:index' schoolUser.school.pk %}" class="nav-link "><span class="pcoded-micon"><i class="fa fa-school"></i></span><span class="pcoded-mtext">{{ schoolUser.school.name }}</span></a>
                         </li>
                     {% endfor %}
                 {% endif %}

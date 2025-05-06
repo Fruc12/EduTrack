@@ -6,20 +6,21 @@
 <div class="pcoded-main-container">
     <div class="pcoded-content">
         <!-- [ breadcrumb ] start -->
-        <div class="page-header">
-            <div class="page-block">
-                <div class="row align-items-center">
-                    <div class="col-md-12">
-                        <div class="page-header-title">
-                            <h5 class="m-b-10">Classe {{ classe.nom }}</h5>
-                        </div>
-                        <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                            <li class="breadcrumb-item"><a href="#!">Classes</a></li>
-                            <li class="breadcrumb-item">{{ classe.nom }}</li>
-                        </ul>
-                    </div>
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <div>
+                <div class="page-header-title">
+                    <h5 class="m-b-10">{{ classroom.name }}</h5>
                 </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url 'dashboard' %}">
+                            <i class="feather icon-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#!">Mes écoles / {{ school.name }} / {{ classroom.name }}</a>
+                    </li>
+                </ul>
             </div>
         </div>
         <!-- [ breadcrumb ] end -->
@@ -350,26 +351,6 @@
     .subject-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-    .nav-tabs .nav-link {
-        border: none;
-        padding: 12px 20px;
-        color: #495057;
-        font-weight: 500;
-    }
-    .nav-tabs .nav-link.active {
-        color: #5e72e4;
-        border-bottom: 3px solid #5e72e4;
-        background: transparent;
-    }
-    .nav-tabs .nav-link:hover:not(.active) {
-        border-bottom: 3px solid #dee2e6;
-    }
-    table td {
-        vertical-align: middle !important;
-    }
-    .tab-content {
-        padding: 20px 0;
     }
 </style>
 {% endblock %}

@@ -25,11 +25,6 @@ def index_school(request):
     context = { "addForm" : form }
     return render(request, 'schools/schools.html', context)
 
-
-def show_school(request, pk):
-    return render(request, "schools/classes.html")
-
-
 def delete_school(request, pk):
     if request.method == 'POST':
         School.objects.get(pk=pk).delete()
