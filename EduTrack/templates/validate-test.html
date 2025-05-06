@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>EduTrack - Validation d'inscription</title>
+    {% include "includes/head.html" %}
+    <style>
+        :root {
+            --primary-color: #5e72e4;
+            --secondary-color: #f7fafc;
+        }
+        
+        .auth-wrapper {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-content {
+            max-width: 450px;
+            width: 100%;
+            padding: 2rem;
+        }
+        
+        .validation-card {
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: none;
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .validation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .logo-container {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .logo-edutrack {
+            height: 80px;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-edutrack:hover {
+            transform: scale(1.05);
+        }
+        
+        .code-inputs {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        
+        .code-inputs input {
+            width: 50px;
+            height: 60px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .code-inputs input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(94, 114, 228, 0.2);
+            outline: none;
+        }
+        
+        .btn-validate {
+            background: var(--primary-color);
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(94, 114, 228, 0.3);
+        }
+        
+        .btn-validate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(94, 114, 228, 0.4);
+        }
+        
+        .resend-link {
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .resend-link:hover {
+            text-decoration: underline;
+        }
+        
+        .timer {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        
+        .divider {
+            position: relative;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e2e8f0;
+            z-index: -1;
+        }
+        
+        .divider-text {
+            display: inline-block;
+            padding: 0 10px;
+            background: white;
+            color: #718096;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- [ auth-validation ] start -->
+    <div class="auth-wrapper">
+        <div class="auth-content text-center">
+            <div class="logo-container">
+                <img src="/static/assets/images/Lokeytion_Logo-removebg-preview.png" alt="EduTrack Logo" class="logo-edutrack">
+            </div>
+            
+            <div class="card validation-card">
+                <div class="card-body p-5">
+                    <h3 class="mb-4 f-w-600">Vérification du compte</h3>
+                    <p class="text-muted mb-4">
+                        Nous avons envoyé un code à 6 chiffres à votre adresse email.<br>
+                        Veuillez le saisir ci-dessous pour valider votre compte.
+                    </p>
+                    
+                    {% if msg %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ msg }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {% endif %}
+                    
+                    <form method="POST" class="mt-4">
+                        {% csrf_token %}
+                        
+                        <div class="code-inputs">
+                            <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" autofocus>
+                            <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                            <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric">
+                        </div>
+                        
+                        <input type="hidden" name="verification_code" id="fullCode">
+                        
+                        <button type="submit" class="btn btn-validate btn-block my-4">
+                            <i class="feather icon-check-circle mr-2"></i> Valider mon compte
+                        </button>
+                        
+                        <div class="text-center mt-3">
+                            <span class="timer">Le code expirera dans <span id="countdown">05:00</span></span>
+                        </div>
+                    </form>
+                    
+                    <div class="divider">
+                        <span class="divider-text">OU</span>
+                    </div>
+                    
+                    <div class="text-center">
+                        <p class="mb-2">Vous n'avez pas reçu de code ?</p>
+                        <a id="resendCode" class="resend-link">
+                            <i class="feather icon-mail mr-1"></i> Renvoyer le code
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <p class="mb-0">Déjà vérifié votre compte ? <a href="{% url 'users:login' %}" class="font-weight-bold">Connectez-vous</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- [ auth-validation ] end -->
+
+    <!-- Required Js -->
+    {% include "includes/scripts.html" %}
+    
+    <script>
+        // Gestion des inputs de code
+        const inputs = document.querySelectorAll('.code-inputs input');
+        const fullCodeInput = document.getElementById('fullCode');
+        
+        inputs.forEach((input, index) => {
+            // Focus sur le premier input au chargement
+            if (index === 0) input.focus();
+            
+            // Gestion de la saisie
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1) {
+                    if (index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                }
+            });
+            
+            // Gestion des touches
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+        });
+        
+        // Mise à jour du code complet avant soumission
+        document.querySelector('form').addEventListener('submit', (e) => {
+            let code = '';
+            inputs.forEach(input => {
+                code += input.value;
+            });
+            fullCodeInput.value = code;
+        });
+        
+        // Compte à rebours
+        let timeLeft = 300; // 5 minutes en secondes
+        
+        const countdown = setInterval(() => {
+            timeLeft--;
+            
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            
+            document.getElementById('countdown').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(countdown);
+                document.getElementById('resendCode').style.display = 'inline-block';
+                document.getElementById('countdown').textContent = "Expiré";
+            }
+        }, 1000);
+        
+        // Renvoi du code
+        document.getElementById('resendCode').addEventListener('click', (e) => {
+            e.preventDefault();
+            // Ici vous ajouteriez une requête AJAX pour renvoyer le code
+            alert("Un nouveau code a été envoyé à votre adresse email.");
+            timeLeft = 300;
+            document.getElementById('countdown').textContent = "05:00";
+            document.getElementById('resendCode').style.display = 'none';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>EduTrack - Inscription</title>
+    {% include "includes/head.html" %}
+    <style>
+        .logo-edutrack {
+            margin-bottom: -150px; /* Réduction de l’espace sous le logo */
+        }
+    </style>
+</head>
+
+<body>
+<!-- [ auth-signin ] start -->
+<div class="auth-wrapper">
+    <div class="auth-content text-center">
+        <img src="/static/assets/images/Lokeytion_Logo-removebg-preview.png" alt="EduTrack Logo" class="img-fluid logo-edutrack">
+        <div class="card borderless">
+            <div class="row align-items-center">
+                <div class="col-md-12">
+                    <div class="card-body">
+                        <h4 class="mb-3 f-w-400">Vous avez reçu un mail !</h4>
+                        <hr>
+                        {% if msg %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ msg }}
+                        </div>
+                        <hr>
+                        {% endif %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="form-group mb-3">
+                                <div class="input-group input-group-alternative">
+                                    <input class="form-control" type="number" placeholder="Entrez le code de validation">
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary my-4">Valider</button>
+                            </div>
+                        </form>
+                        <hr>
+                        <p class="mb-0 text-muted">Déjà complété cette étape ? <a href="{% url 'users:login' %}" class="f-w-400">Connectez-vous !</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- [ auth-signin ] end -->
+
+<!-- Required Js -->
+{% include "includes/scripts.html" %}
+
+</body>
+</html>
