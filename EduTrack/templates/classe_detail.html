@@ -1,0 +1,395 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Classe {{ classe.nom }} {% endblock %}
+
+{% block content %}
+<div class="pcoded-main-container">
+    <div class="pcoded-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h5 class="m-b-10">Classe {{ classe.nom }}</h5>
+                        </div>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
+                            <li class="breadcrumb-item"><a href="#!">Classes</a></li>
+                            <li class="breadcrumb-item">{{ classe.nom }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <!-- Info Classe -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Informations de la classe</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 text-center">
+                                <div class="mb-3">
+                                    <i class="feather icon-bookmark f-40 text-c-blue"></i>
+                                </div>
+                                <h5>Niveau</h5>
+                                <p class="text-muted">CM2</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="mb-3">
+                                    <i class="feather icon-user f-40 text-c-green"></i>
+                                </div>
+                                <h5>Professeur principal</h5>
+                                <p class="text-muted">M. Konan Adama</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="mb-3">
+                                    <i class="feather icon-users f-40 text-c-yellow"></i>
+                                </div>
+                                <h5>Nombre d'élèves</h5>
+                                <p class="text-muted">26</p>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <div class="mb-3">
+                                    <i class="feather icon-calendar f-40 text-c-red"></i>
+                                </div>
+                                <h5>Année scolaire</h5>
+                                <p class="text-muted">2023-2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation par onglets -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#eleves">
+                                    <i class="feather icon-users mr-2"></i>Élèves
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#matieres">
+                                    <i class="feather icon-book mr-2"></i>Matières
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#emploi-du-temps">
+                                    <i class="feather icon-calendar mr-2"></i>Emploi du temps
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body tab-content">
+                        <!-- Onglet Élèves -->
+                        <div class="tab-pane fade show active" id="eleves">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5>Liste des élèves</h5>
+                                {% if user.is_staff %}
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="feather icon-plus"></i> Ajouter
+                                </button>
+                                {% endif %}
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Nom complet</th>
+                                            <th>Date naiss.</th>
+                                            {% if user.is_staff %}
+                                            <th>Actions</th>
+                                            {% endif %}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Données fictives - 5 élèves -->
+                                        <tr>
+                                            <td>1</td>
+                                            <td>
+                                                <img src="/static/assets/images/user/avatar-1.jpg" class="img-radius wid-30 m-r-10" alt="photo">
+                                                Koffi Amani
+                                            </td>
+                                            <td>12/05/2014</td>
+                                            {% if user.is_staff %}
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <i class="feather icon-edit"></i>
+                                                </button>
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>
+                                                <img src="/static/assets/images/user/avatar-2.jpg" class="img-radius wid-30 m-r-10" alt="photo">
+                                                Aïcha Diallo
+                                            </td>
+                                            <td>22/08/2013</td>
+                                            {% if user.is_staff %}
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <i class="feather icon-edit"></i>
+                                                </button>
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>
+                                                <img src="/static/assets/images/user/avatar-3.jpg" class="img-radius wid-30 m-r-10" alt="photo">
+                                                Jean Dupont
+                                            </td>
+                                            <td>03/01/2014</td>
+                                            {% if user.is_staff %}
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <i class="feather icon-edit"></i>
+                                                </button>
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td>
+                                                <img src="/static/assets/images/user/avatar-4.jpg" class="img-radius wid-30 m-r-10" alt="photo">
+                                                Fatou Ndiaye
+                                            </td>
+                                            <td>15/07/2014</td>
+                                            {% if user.is_staff %}
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <i class="feather icon-edit"></i>
+                                                </button>
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td>
+                                                <img src="/static/assets/images/user/avatar-5.jpg" class="img-radius wid-30 m-r-10" alt="photo">
+                                                Mohamed Keita
+                                            </td>
+                                            <td>30/11/2013</td>
+                                            {% if user.is_staff %}
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-primary">
+                                                    <i class="feather icon-edit"></i>
+                                                </button>
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Onglet Matières -->
+                        <div class="tab-pane fade" id="matieres">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5>Matières enseignées</h5>
+                                {% if user.is_staff %}
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="feather icon-plus"></i> Ajouter
+                                </button>
+                                {% endif %}
+                            </div>
+                            <div class="row">
+                                <!-- Données fictives -->
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card subject-card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="mb-3">
+                                                <i class="feather icon-book f-30 text-c-blue"></i>
+                                            </div>
+                                            <h5>Mathématiques</h5>
+                                            <p class="text-muted">M. Konan</p>
+                                            <p><span class="badge badge-primary">4h/semaine</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card subject-card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="mb-3">
+                                                <i class="feather icon-book f-30 text-c-green"></i>
+                                            </div>
+                                            <h5>Français</h5>
+                                            <p class="text-muted">Mme. Adjo</p>
+                                            <p><span class="badge badge-primary">5h/semaine</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card subject-card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="mb-3">
+                                                <i class="feather icon-globe f-30 text-c-yellow"></i>
+                                            </div>
+                                            <h5>Histoire-Géo</h5>
+                                            <p class="text-muted">M. Diallo</p>
+                                            <p><span class="badge badge-primary">3h/semaine</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card subject-card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="mb-3">
+                                                <i class="feather icon-activity f-30 text-c-red"></i>
+                                            </div>
+                                            <h5>Sciences</h5>
+                                            <p class="text-muted">Mme. Johnson</p>
+                                            <p><span class="badge badge-primary">2h/semaine</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card subject-card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="mb-3">
+                                                <i class="feather icon-music f-30 text-c-purple"></i>
+                                            </div>
+                                            <h5>Éducation musicale</h5>
+                                            <p class="text-muted">M. Kouamé</p>
+                                            <p><span class="badge badge-primary">1h/semaine</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card subject-card h-100">
+                                        <div class="card-body text-center">
+                                            <div class="mb-3">
+                                                <i class="feather icon-feather f-30 text-c-pink"></i>
+                                            </div>
+                                            <h5>Arts plastiques</h5>
+                                            <p class="text-muted">Mme. Adjo</p>
+                                            <p><span class="badge badge-primary">1h/semaine</span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Onglet Emploi du temps -->
+                        <div class="tab-pane fade" id="emploi-du-temps">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5>Emploi du temps</h5>
+                                {% if user.is_staff %}
+                                <button class="btn btn-sm btn-primary">
+                                    <i class="feather icon-edit"></i> Modifier
+                                </button>
+                                {% endif %}
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Heures</th>
+                                            <th>Lundi</th>
+                                            <th>Mardi</th>
+                                            <th>Mercredi</th>
+                                            <th>Jeudi</th>
+                                            <th>Vendredi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Données fictives -->
+                                        <tr>
+                                            <td>08h-09h</td>
+                                            <td rowspan="2" class="bg-primary text-white">Mathématiques<br>M. Konan</td>
+                                            <td rowspan="2" class="bg-success text-white">Français<br>Mme. Adjo</td>
+                                            <td rowspan="3" class="bg-warning">Sport<br>M. Traoré</td>
+                                            <td>Histoire<br>M. Diallo</td>
+                                            <td rowspan="2" class="bg-danger text-white">Sciences<br>Mme. Johnson</td>
+                                        </tr>
+                                        <tr>
+                                            <td>09h-10h</td>
+                                            <td>Géographie<br>M. Diallo</td>
+                                        </tr>
+                                        <tr>
+                                            <td>10h-11h</td>
+                                            <td>Anglais<br>Mme. Smith</td>
+                                            <td>Mathématiques<br>M. Konan</td>
+                                            <td>Arts Plastiques<br>Mme. Adjo</td>
+                                            <td>Musique<br>M. Kouamé</td>
+                                        </tr>
+                                        <tr>
+                                            <td>11h-12h</td>
+                                            <td colspan="5" class="text-center bg-light">PAUSE DEJEUNER</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .subject-card {
+        transition: all 0.3s ease;
+        border-radius: 10px;
+    }
+    .subject-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .nav-tabs .nav-link {
+        border: none;
+        padding: 12px 20px;
+        color: #495057;
+        font-weight: 500;
+    }
+    .nav-tabs .nav-link.active {
+        color: #5e72e4;
+        border-bottom: 3px solid #5e72e4;
+        background: transparent;
+    }
+    .nav-tabs .nav-link:hover:not(.active) {
+        border-bottom: 3px solid #dee2e6;
+    }
+    table td {
+        vertical-align: middle !important;
+    }
+    .tab-content {
+        padding: 20px 0;
+    }
+</style>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+// Script pour garder l'onglet actif après rechargement
+$(document).ready(function(){
+    // Vérifie s'il y a un hash dans l'URL
+    if(window.location.hash) {
+        $('.nav-tabs a[href="' + window.location.hash + '"]').tab('show');
+    }
+    
+    // Change l'URL quand on clique sur un onglet
+    $('.nav-tabs a').on('click', function(e) {
+        e.preventDefault();
+        var hash = $(this).attr('href');
+        history.pushState(null, null, hash);
+        $(this).tab('show');
+    });
+});
+</script>
+{% endblock %}

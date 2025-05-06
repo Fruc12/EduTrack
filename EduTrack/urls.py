@@ -23,7 +23,7 @@ urlpatterns = [
     path('accounts/', include('users.urls')),
     path('parents/', include('parents.urls')),
     path('schools/', include('schools.urls')),
-    
+    path('classe/<int:classe_id>/', views.classe_detail, name='classe_detail'),
     path('', views.homepage, name='dashboard'),
     
     re_path(r'^.*\.html$', views.pages, name='pages'),
