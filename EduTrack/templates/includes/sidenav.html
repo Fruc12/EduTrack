@@ -28,7 +28,7 @@
                 </li>
                 {% if user.role == 'school' %}
                     <li class="nav-item pcoded-menu-caption">
-                        <label>Mes écoles</label>
+                        <label><a href="{% url 'schools:index' %}">Mes écoles</a></label>
                     </li>
                     {% for schoolUser in user.schoolUsers.all %}
                         <li class="nav-item">

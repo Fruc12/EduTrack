@@ -29,6 +29,15 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'users.User'  # Specify the custom user model
 
+# EMAIL_HOST='localhost'
+# EMAIL_PORT='9025'
+
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT='465'
+EMAIL_HOST_USER='tfeai2022@gmail.com'
+EMAIL_HOST_PASSWORD='ipxyiipmmgjoaisd'
+EMAIL_USE_SSL=True
+
 
 # Application definition
 

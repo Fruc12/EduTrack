@@ -1,7 +1,17 @@
+from datetime import datetime
+from random import randint
+
 from django.contrib.auth.decorators import login_not_required
-from django.shortcuts import render, redirect
+from django.core.mail import EmailMessage
+from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
+
 from .forms import LoginForm, SignUpForm
 from django.contrib.auth import authenticate, login, logout
+
+from .models import Validation, User
+
+
 # Create your views here.
 
 @login_not_required
@@ -31,15 +41,19 @@ def login_user(request):
 
 @login_not_required
 def register_user(request):
-    msg = form = None
+    msg = None
 
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
-
-            return redirect("users:login")
-
+            user = form.save(commit=False)
+            is_sent, validation = register_mailer(user)
+            if is_sent:
+                user.save()
+                validation.user = user
+                validation.save()
+                return redirect('users:validate', user.pk)
+            msg = "Erreur a l'envoi du mail de validation"
         else:
             msg = 'Erreur lors de la validation du formulaire'
     else:
@@ -48,6 +62,22 @@ def register_user(request):
     context = {"form": form, "msg": msg}
     return render(request, "users/register.html", context)
 
+@login_not_required
+def validate_user(request, user_pk):
+    if request.method == "POST":
+        code = request.POST["code"]
+        user = get_object_or_404(User, pk=user_pk)
+        if datetime.now().timestamp() >= user.validation.expires_at.timestamp():
+            user.delete()
+            return redirect("users:register")
+        if code == str(user.validation.code):
+            user.is_active=True
+            user.save()
+            user.validation.delete()
+            return redirect('users:login')
+        return redirect('users:validate', user_pk)
+    return render(request, "users/register-validation.html", {"user":get_object_or_404(User, pk=user_pk)})
+
 def logout_user(request):
     logout(request)
     return redirect("users:login")
@@ -55,3 +85,13 @@ def logout_user(request):
 def profile(request):
     context = {}
     return render(request, "users/profile.html", context)
+
+def register_mailer(user):
+    code = randint(000000, 999999)
+    validation = Validation(code=code, user=user)
+    subject = "Edutrack Validation Inscription"
+    body = render_to_string("mails/register-validation.html", {"validation":validation})
+    to = [user.email]
+    mail = EmailMessage(subject=subject, body=body, to=to)
+    mail.content_subtype = 'html'
+    return mail.send(), validation
