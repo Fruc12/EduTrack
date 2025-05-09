@@ -33,10 +33,11 @@ AUTH_USER_MODEL = 'users.User'  # Specify the custom user model
 # EMAIL_PORT='9025'
 
 EMAIL_HOST='smtp.gmail.com'
-EMAIL_PORT='465'
-EMAIL_HOST_USER='tfeai2022@gmail.com'
-EMAIL_HOST_PASSWORD='ipxyiipmmgjoaisd'
-EMAIL_USE_SSL=True
+EMAIL_PORT=587
+EMAIL_HOST_USER='narufruc@gmail.com'
+EMAIL_HOST_PASSWORD='ddpd msaa nggt ltuc'
+EMAIL_USE_TLS=True
+EMAIL_TIMEOUT=30
 
 
 # Application definition

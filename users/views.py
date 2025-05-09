@@ -1,14 +1,14 @@
 from datetime import datetime
 from random import randint
 
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_not_required
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
+from passlib.hash import pbkdf2_sha256
 
 from .forms import LoginForm, SignUpForm
-from django.contrib.auth import authenticate, login, logout
-
 from .models import Validation, User
 
 
@@ -16,9 +16,7 @@ from .models import Validation, User
 
 @login_not_required
 def login_user(request):
-    form = msg = None
-    context = {}
-    
+    msg = None
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -51,6 +49,7 @@ def register_user(request):
             if is_sent:
                 user.save()
                 validation.user = user
+                validation.code = pbkdf2_sha256.hash(validation.code)
                 validation.save()
                 return redirect('users:validate', user.pk)
             msg = "Erreur a l'envoi du mail de validation"
@@ -69,8 +68,9 @@ def validate_user(request, user_pk):
         user = get_object_or_404(User, pk=user_pk)
         if datetime.now().timestamp() >= user.validation.expires_at.timestamp():
             user.delete()
+            print("Le code de d'activation a expiré")
             return redirect("users:register")
-        if code == str(user.validation.code):
+        if pbkdf2_sha256.verify(code, user.validation.code):
             user.is_active=True
             user.save()
             user.validation.delete()
@@ -87,7 +87,8 @@ def profile(request):
     return render(request, "users/profile.html", context)
 
 def register_mailer(user):
-    code = randint(000000, 999999)
+    code = randint(0, 999999)
+    code = f"{code:06}"
     validation = Validation(code=code, user=user)
     subject = "Edutrack Validation Inscription"
     body = render_to_string("mails/register-validation.html", {"validation":validation})

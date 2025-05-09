@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
-from django.db import models
+
 from django.contrib.auth.models import AbstractUser
+from django.db import models
+
 
 class User(AbstractUser):
     username_validator = True
@@ -15,7 +17,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
 class Validation(models.Model):
-    code = models.IntegerField()
+    code = models.CharField(max_length=128)
     user = models.OneToOneField (User, on_delete=models.CASCADE, related_name='validation')
     created_at = models.DateTimeField(default=datetime.now())
     expires_at = models.DateTimeField(default=datetime.now()+timedelta(minutes=10))
