@@ -55,42 +55,41 @@
 {#                    </div>#}
 {#                </div>#}
 {#            </div>#}
-            {% for schoolUser in user.schoolUsers.all %}
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">{{ schoolUser.school.name }}</h6>
-                            <div class="card-header-right">
-                                <div class="btn-group card-option">
-                                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="feather icon-more-horizontal"></i>
-                                    </button>
-                                    <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                                        <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i>Modifier</a></li>
-                                        <li class="dropdown-item"><a data-toggle="modal" data-target="#deleteSchoolModal" href="#!" onclick="setDeleteSchoolId({{ schoolUser.school.pk }})"><i class="feather icon-trash"></i>Supprimer</a></li>
-                                    </ul>
-                                </div>
+        {% for schoolUser in user.schoolUsers.all %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">{{ schoolUser.school.name }}</h6>
+                        <div class="card-header-right">
+                            <div class="btn-group card-option">
+                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="feather icon-more-horizontal"></i>
+                                </button>
+                                <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                                    <li class="dropdown-item reload-card"><a href="#!"><i class="feather icon-refresh-cw"></i>Modifier</a></li>
+                                    <li class="dropdown-item"><a data-toggle="modal" data-target="#deleteSchoolModal" href="#!" onclick="setDeleteSchoolId({{ schoolUser.school.pk }})"><i class="feather icon-trash"></i>Supprimer</a></li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="card-body">
-                            <p><span><strong>Période : </strong></span><span>
-                                {% if schoolUser.school.period == 'trimester' %}
-                                    Trimestre
-                                {% else %}
-                                    Semestre
-                                {% endif %}
-                            </span></p>
-                            <a class="btn btn-primary btn-block"
-                               href="{% url 'schools:classrooms:index' schoolUser.school.pk %}">
-                                Accéder
-                            </a>
-                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p><span><strong>Période : </strong></span><span>
+                            {% if schoolUser.school.period == 'trimester' %}
+                                Trimestre
+                            {% else %}
+                                Semestre
+                            {% endif %}
+                        </span></p>
+                        <a class="btn btn-primary btn-block"
+                           href="{% url 'schools:classrooms:index' schoolUser.school.pk %}">
+                            Accéder
+                        </a>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
-        <!-- [ Main Content ] end -->
+            </div>
+        {% endfor %}
     </div>
+    <!-- [ Main Content ] end -->
 </div>
     
 <!-- Modal d'ajout d'une école -->

@@ -1,9 +1,20 @@
+import random
+import string
+
+from django.contrib.auth.hashers import make_password
+from django.core.mail import EmailMessage
 from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
+from django.template.loader import render_to_string
+
+from parents.forms import StudentForm, ParentForm
+from parents.models import Parent, Student
 from schools.models import School
+from users.models import User
 from .forms import ClassroomForm
 from .models import Classroom
-from django.shortcuts import get_object_or_404, redirect
+
 
 def index_classrooms(request, school_pk):
     if request.method == 'POST':
@@ -28,7 +39,82 @@ def delete_classroom(request, school_pk, classroom_pk):
 
 
 def show_classroom(request, school_pk, classroom_pk):
-    school = get_object_or_404(School, pk=school_pk)
+    get_object_or_404(School, pk=school_pk)
     classroom = get_object_or_404(Classroom, pk=classroom_pk)
-    context = {'addForm': None, 'school': school, "classroom" : classroom}
+    add_student_form = StudentForm()
+    add_parent_form = ParentForm()
+    context = {
+        'addStudentForm': add_student_form,
+        'addParentForm': add_parent_form,
+        "classroom" : classroom
+    }
     return render(request, "classrooms/classroom-details.html", context)
+
+def add_student(request, school_pk, classroom_pk):
+    if request.method == 'POST':
+        add_student_form = StudentForm(request.POST)
+        if add_student_form.is_valid():
+            add_student_form.save()
+            return redirect('schools:classrooms:show', school_pk, classroom_pk)
+    else:
+        add_student_form = StudentForm()
+    add_parent_form = ParentForm()
+    context = {
+        'addStudentForm': add_student_form,
+        'addParentForm': add_parent_form,
+        "classroom" : get_object_or_404(Classroom, pk=classroom_pk),
+    }
+    return render(request, "classrooms/classroom-details.html", context)
+
+def add_parent(request, school_pk, classroom_pk):
+    msg = None
+    if request.method == 'POST':
+        add_parent_form = ParentForm(request.POST)
+        if add_parent_form.is_valid():
+            mdp = get_random_string()
+            user = User(
+                first_name=add_parent_form.cleaned_data['first_name'],
+                last_name=add_parent_form.cleaned_data['last_name'],
+                email=add_parent_form.cleaned_data['email'],
+                role = 'parent',
+                password=mdp,
+            )
+            parent = Parent(
+                phone = add_parent_form.cleaned_data["phone"],
+                student = get_object_or_404(Student, pk=request.POST["student"]),
+                user = user,
+            )
+            is_sent = register_parent_mailer(parent)
+            if is_sent:
+                user.password = make_password(user.password)
+                user.is_active = True
+                user.save()
+                parent.user_id = user.pk
+                parent.save()
+                return redirect('schools:classrooms:show', school_pk, classroom_pk)
+            msg = "Erreur lors de l'envoi de l'email des identifiants"
+        else:
+            msg = "Erreur lors de la validation du formulaire"
+    else:
+        add_parent_form = ParentForm()
+    add_student_form = StudentForm()
+    context = {
+        'addStudentForm': add_student_form,
+        'addParentForm': add_parent_form,
+        "classroom" : get_object_or_404(Classroom, pk=classroom_pk),
+        "msg" : msg,
+    }
+    return render(request, "classrooms/classroom-details.html", context)
+
+def register_parent_mailer(parent):
+    subject = "Identifiants de connexion EduTrack"
+    body = render_to_string("mails/register-parent.html", {"parent":parent})
+    to = [parent.user.email]
+    mail = EmailMessage(subject=subject, body=body, to=to)
+    mail.content_subtype = 'html'
+    return mail.send()
+
+def get_random_string():
+    chars = string.ascii_letters + string.digits
+    mdp = random.choices(chars, k=10)
+    return ''.join(mdp)

@@ -95,101 +95,55 @@
                         <div class="tab-pane fade show active" id="eleves">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5>Liste des élèves</h5>
-                                {% if user.is_staff %}
-                                <button class="btn btn-sm btn-primary">
+                                <button data-toggle="modal" data-target="#addStudentModal" class="btn btn-sm btn-primary">
                                     <i class="feather icon-plus"></i> Ajouter
                                 </button>
-                                {% endif %}
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Nom complet</th>
-                                            <th>Date naiss.</th>
-                                            {% if user.is_staff %}
-                                            <th>Actions</th>
-                                            {% endif %}
+                                            <th class="text-center align-center">#</th>
+                                            <th class="text-center align-center">Nom</th>
+                                            <th class="text-center align-center">Nom parent</th>
+                                            <th class="text-center align-center">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <!-- Données fictives - 5 élèves -->
                                         <tr>
-                                            <td>1</td>
-                                            <td>
+                                            <td class="text-center align-center">1</td>
+                                            <td class="text-center align-center">
                                                 <img src="/static/assets/images/user/avatar-1.jpg" class="img-radius wid-30 m-r-10" alt="photo">
                                                 Koffi Amani
                                             </td>
-                                            <td>12/05/2014</td>
-                                            {% if user.is_staff %}
-                                            <td>
+                                            <td class="text-center align-center">12/05/2014</td>
+                                            <td class="text-center align-center">
                                                 <button class="btn btn-sm btn-outline-primary">
                                                     <i class="feather icon-edit"></i>
                                                 </button>
                                             </td>
-                                            {% endif %}
                                         </tr>
+                                        {% for student in classroom.students.all %}
                                         <tr>
-                                            <td>2</td>
-                                            <td>
-                                                <img src="/static/assets/images/user/avatar-2.jpg" class="img-radius wid-30 m-r-10" alt="photo">
-                                                Aïcha Diallo
+                                            <td class="text-center align-center"> 2 </td>
+                                            <td class="text-center align-center"> {{ student.name }} </td>
+                                            <td class="text-center align-center">
+                                                {% if student.parent %}
+                                                    {{ student.parent.user.get_full_name }}
+                                                {% else %}
+                                                    <a data-toggle="modal" data-target="#addParentModal" onclick="setAddParentId({{ student.pk }})" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                        <i class="feather icon-plus"></i>
+                                                    </a>
+                                                {% endif %}
                                             </td>
-                                            <td>22/08/2013</td>
-                                            {% if user.is_staff %}
-                                            <td>
+                                            <td class="text-center align-center">
                                                 <button class="btn btn-sm btn-outline-primary">
                                                     <i class="feather icon-edit"></i>
                                                 </button>
                                             </td>
-                                            {% endif %}
                                         </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>
-                                                <img src="/static/assets/images/user/avatar-3.jpg" class="img-radius wid-30 m-r-10" alt="photo">
-                                                Jean Dupont
-                                            </td>
-                                            <td>03/01/2014</td>
-                                            {% if user.is_staff %}
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary">
-                                                    <i class="feather icon-edit"></i>
-                                                </button>
-                                            </td>
-                                            {% endif %}
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>
-                                                <img src="/static/assets/images/user/avatar-4.jpg" class="img-radius wid-30 m-r-10" alt="photo">
-                                                Fatou Ndiaye
-                                            </td>
-                                            <td>15/07/2014</td>
-                                            {% if user.is_staff %}
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary">
-                                                    <i class="feather icon-edit"></i>
-                                                </button>
-                                            </td>
-                                            {% endif %}
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td>
-                                                <img src="/static/assets/images/user/avatar-5.jpg" class="img-radius wid-30 m-r-10" alt="photo">
-                                                Mohamed Keita
-                                            </td>
-                                            <td>30/11/2013</td>
-                                            {% if user.is_staff %}
-                                            <td>
-                                                <button class="btn btn-sm btn-outline-primary">
-                                                    <i class="feather icon-edit"></i>
-                                                </button>
-                                            </td>
-                                            {% endif %}
-                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -340,6 +294,77 @@
         <!-- [ Main Content ] end -->
     </div>
 </div>
+   
+<!-- Modal d'ajout d'un éleve -->
+<div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog"
+     aria-labelledby="addStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addStudentModalLabel">Ajouter un éleve a {{ classroom.name }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{% url 'schools:classrooms:add_student' classroom.school.pk classroom.pk %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                        <div class="form-group">
+                            {{ addStudentForm.name }}
+                        </div>
+                        <span class="text-danger">{{ addStudentForm.name.errors }}</span>
+                        <input type="hidden" name="classroom" value="{{ classroom.pk }}">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+   
+<!-- Modal d'ajout d'un parent -->
+<div class="modal fade" id="addParentModal" tabindex="-1" role="dialog"
+     aria-labelledby="addParentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addParentModalLabel">Ajouter un parent a l'élève</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{% url 'schools:classrooms:add_parent' classroom.school.pk classroom.pk %}">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        {{ addParentForm.first_name }}
+                    </div>
+                    <span class="text-danger">{{ addParentForm.first_name.errors }}</span>
+                    <div class="form-group">
+                        {{ addParentForm.last_name }}
+                    </div>
+                    <span class="text-danger">{{ addParentForm.last_name.errors }}</span>
+                    <div class="form-group">
+                        {{ addParentForm.email }}
+                    </div>
+                    <span class="text-danger">{{ addParentForm.email.errors }}</span>
+                    <div class="form-group">
+                        {{ addParentForm.phone }}
+                    </div>
+                    <span class="text-danger">{{ addParentForm.phone.errors }}</span>
+                    <input type="hidden" name="student" value="" id="id_student">
+                    {{ addParentForm.student.errors }}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block stylesheets %}
@@ -357,20 +382,9 @@
 
 {% block javascripts %}
 <script>
-// Script pour garder l'onglet actif après rechargement
-$(document).ready(function(){
-    // Vérifie s'il y a un hash dans l'URL
-    if(window.location.hash) {
-        $('.nav-tabs a[href="' + window.location.hash + '"]').tab('show');
+    function setAddParentId(parentId) {
+        const input = document.getElementById('id_student');
+        input.value = parentId;
     }
-    
-    // Change l'URL quand on clique sur un onglet
-    $('.nav-tabs a').on('click', function(e) {
-        e.preventDefault();
-        var hash = $(this).attr('href');
-        history.pushState(null, null, hash);
-        $(this).tab('show');
-    });
-});
 </script>
 {% endblock %}

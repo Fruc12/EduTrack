@@ -1,12 +1,12 @@
-from datetime import datetime
 from random import randint
 
+import bcrypt
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_not_required
 from django.core.mail import EmailMessage
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
-from passlib.hash import pbkdf2_sha256
+from django.utils import timezone
 
 from .forms import LoginForm, SignUpForm
 from .models import Validation, User
@@ -49,7 +49,7 @@ def register_user(request):
             if is_sent:
                 user.save()
                 validation.user = user
-                validation.code = pbkdf2_sha256.hash(validation.code)
+                validation.code = bcrypt.hashpw(validation.code.encode(), bcrypt.gensalt()).decode()
                 validation.save()
                 return redirect('users:validate', user.pk)
             msg = "Erreur a l'envoi du mail de validation"
@@ -66,17 +66,18 @@ def validate_user(request, user_pk):
     if request.method == "POST":
         code = request.POST["code"]
         user = get_object_or_404(User, pk=user_pk)
-        if datetime.now().timestamp() >= user.validation.expires_at.timestamp():
+        if timezone.now() >= user.validation.expires_at:
             user.delete()
             print("Le code de d'activation a expiré")
             return redirect("users:register")
-        if pbkdf2_sha256.verify(code, user.validation.code):
+        if bcrypt.checkpw(code.encode(), user.validation.code.encode()):
             user.is_active=True
             user.save()
             user.validation.delete()
             return redirect('users:login')
         return redirect('users:validate', user_pk)
-    return render(request, "users/register-validation.html", {"user":get_object_or_404(User, pk=user_pk)})
+    context = {"user":get_object_or_404(User, pk=user_pk)}
+    return render(request, "users/register-validation.html", context)
 
 def logout_user(request):
     logout(request)

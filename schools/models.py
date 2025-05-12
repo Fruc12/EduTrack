@@ -1,5 +1,7 @@
 from django.db import models
+
 from users.models import User
+
 
 class School(models.Model):
     PERIODS = [ ('','Sélectionnez une période'), ('trimester', 'Trimestre'), ('semester', 'Semestre') ]

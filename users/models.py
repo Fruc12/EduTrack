@@ -1,7 +1,6 @@
-from datetime import datetime, timedelta
-
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -19,5 +18,5 @@ class User(AbstractUser):
 class Validation(models.Model):
     code = models.CharField(max_length=128)
     user = models.OneToOneField (User, on_delete=models.CASCADE, related_name='validation')
-    created_at = models.DateTimeField(default=datetime.now())
-    expires_at = models.DateTimeField(default=datetime.now()+timedelta(minutes=10))
+    created_at = models.DateTimeField(default=timezone.now)
+    expires_at = models.DateTimeField(default=timezone.now()+timezone.timedelta(minutes=10))
