@@ -67,17 +67,21 @@
 </head>
 <body>
     <div class="container">
-        <h1>Identifiants EduTrack</h1>
+        <h1>Identifiants Parent EduTrack</h1>
         <p>M. <span class="highlight">{{ parent.user.get_full_name }}</span>,</p>
-        <p>Vous avez été avec succes sur <span class="highlight">EduTrack</span> pour l'éleve <span class="highlight">{{ parent.student.name }}</span>.</p>
-        <p>Vos identifiants sont : <p>
-        <p>Email : <span class="highlight">{{ parent.user.email }}</span></p>
-        <p>Mot de passe : <span class="highlight">{{ parent.user.password }}</span></p>
+        <p>Vous avez été ajouté sur <span class="highlight">EduTrack</span> pour le suivi de l'élève <span class="highlight">{{ parent.student.name }}</span>.</p>
+        <p>Voici vos identifiants : <p>
+        <div class="resource-info">
+            <p>Email : <span class="highlight">{{ parent.user.email }}</span></p>
+            <p>Mot de passe : <span class="highlight">{{ parent.user.password }}</span></p>
+        </div>
         <p>Merci de votre intérêt.</p>
-
         <footer>
             <p>EduTrack - L'équipe de gestion.</p>
         </footer>
     </div>
 </body>
+
+
+
 </html>

@@ -18,7 +18,7 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="#!">Mes écoles / {{ school.name }} / {{ classroom.name }}</a>
+                        <a href="#!">Mes écoles / {{ classroom.school.name }} / {{ classroom.name }}</a>
                     </li>
                 </ul>
             </div>
@@ -40,28 +40,28 @@
                                     <i class="feather icon-bookmark f-40 text-c-blue"></i>
                                 </div>
                                 <h5>Niveau</h5>
-                                <p class="text-muted">CM2</p>
+                                <p class="text-muted">{{ classroom.level }}</p>
                             </div>
                             <div class="col-md-3 text-center">
                                 <div class="mb-3">
                                     <i class="feather icon-user f-40 text-c-green"></i>
                                 </div>
                                 <h5>Professeur principal</h5>
-                                <p class="text-muted">M. Konan Adama</p>
+                                <p class="text-muted"></p>
                             </div>
                             <div class="col-md-3 text-center">
                                 <div class="mb-3">
                                     <i class="feather icon-users f-40 text-c-yellow"></i>
                                 </div>
                                 <h5>Nombre d'élèves</h5>
-                                <p class="text-muted">26</p>
+                                <p class="text-muted">{{ classroom.students.count }}</p>
                             </div>
                             <div class="col-md-3 text-center">
                                 <div class="mb-3">
                                     <i class="feather icon-calendar f-40 text-c-red"></i>
                                 </div>
                                 <h5>Année scolaire</h5>
-                                <p class="text-muted">2023-2024</p>
+                                <p class="text-muted">2024-2025</p>
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,7 @@
                                 </button>
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <table class="table table-hover" id="student-table">
                                     <thead>
                                         <tr>
                                             <th class="text-center align-center">#</th>
@@ -110,23 +110,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Données fictives - 5 élèves -->
-                                        <tr>
-                                            <td class="text-center align-center">1</td>
-                                            <td class="text-center align-center">
-                                                <img src="/static/assets/images/user/avatar-1.jpg" class="img-radius wid-30 m-r-10" alt="photo">
-                                                Koffi Amani
-                                            </td>
-                                            <td class="text-center align-center">12/05/2014</td>
-                                            <td class="text-center align-center">
-                                                <button class="btn btn-sm btn-outline-primary">
-                                                    <i class="feather icon-edit"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
                                         {% for student in classroom.students.all %}
                                         <tr>
-                                            <td class="text-center align-center"> 2 </td>
+                                            <td class="text-center align-center"> {{ forloop.counter }} </td>
                                             <td class="text-center align-center"> {{ student.name }} </td>
                                             <td class="text-center align-center">
                                                 {% if student.parent %}
@@ -330,7 +316,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addParentModalLabel">Ajouter un parent a l'élève</h5>
+                <h5 class="modal-title" id="addParentModalLabel">Ajouter un parent à l'élève</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -355,7 +341,6 @@
                     </div>
                     <span class="text-danger">{{ addParentForm.phone.errors }}</span>
                     <input type="hidden" name="student" value="" id="id_student">
-                    {{ addParentForm.student.errors }}
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Ajouter</button>
@@ -386,5 +371,12 @@
         const input = document.getElementById('id_student');
         input.value = parentId;
     }
+    
+    let table = new DataTable('#student-table', {
+        language: {
+            url: '//cdn.datatables.net/plug-ins/2.3.0/i18n/fr-FR.json',
+        },
+    });
+    
 </script>
-{% endblock %}
+{% endblock javascripts %}

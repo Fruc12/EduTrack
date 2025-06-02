@@ -3,7 +3,7 @@ User:
 	name
 	email
 	password
-	role (school, parent)
+	role (school, parent, teacher)
 	created-at
 	updated-at
 School:

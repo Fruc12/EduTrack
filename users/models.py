@@ -7,7 +7,7 @@ class User(AbstractUser):
     username_validator = True
 
     username = models.CharField(max_length=1, blank=True, null=True)
-    ROLES = [('school', 'Etablissement'), ('parent', 'Parent')]
+    ROLES = [('school', 'Etablissement'), ('parent', 'Parent'), ('teacher', 'Enseignant')]
     email = models.EmailField(unique=True, max_length=255)
     role = models.CharField(max_length=20, choices=ROLES, default='school')
     is_active = models.BooleanField(default=False)

@@ -71,25 +71,23 @@ def add_parent(request, school_pk, classroom_pk):
     if request.method == 'POST':
         add_parent_form = ParentForm(request.POST)
         if add_parent_form.is_valid():
-            mdp = get_random_string()
             user = User(
                 first_name=add_parent_form.cleaned_data['first_name'],
                 last_name=add_parent_form.cleaned_data['last_name'],
                 email=add_parent_form.cleaned_data['email'],
                 role = 'parent',
-                password=mdp,
+                password = ''.join( random.choices(string.ascii_letters + string.digits, k=10) ),
             )
             parent = Parent(
                 phone = add_parent_form.cleaned_data["phone"],
                 student = get_object_or_404(Student, pk=request.POST["student"]),
                 user = user,
             )
-            is_sent = register_parent_mailer(parent)
-            if is_sent:
+            if register_parent_mailer(parent):
                 user.password = make_password(user.password)
                 user.is_active = True
                 user.save()
-                parent.user_id = user.pk
+                parent.user = user
                 parent.save()
                 return redirect('schools:classrooms:show', school_pk, classroom_pk)
             msg = "Erreur lors de l'envoi de l'email des identifiants"
@@ -113,8 +111,3 @@ def register_parent_mailer(parent):
     mail = EmailMessage(subject=subject, body=body, to=to)
     mail.content_subtype = 'html'
     return mail.send()
-
-def get_random_string():
-    chars = string.ascii_letters + string.digits
-    mdp = random.choices(chars, k=10)
-    return ''.join(mdp)
