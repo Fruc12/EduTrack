@@ -91,7 +91,6 @@
                         </ul>
                     </div>
                     <div class="card-body tab-content">
-                        <!-- Onglet Élèves -->
                         <div class="tab-pane fade show active" id="eleves">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5>Liste des élèves</h5>
@@ -103,10 +102,10 @@
                                 <table class="table table-hover" id="student-table">
                                     <thead>
                                         <tr>
-                                            <th class="text-center align-center">#</th>
-                                            <th class="text-center align-center">Nom</th>
-                                            <th class="text-center align-center">Nom parent</th>
-                                            <th class="text-center align-center">Actions</th>
+                                            <th class="text-center align-center"><i class="feather icon-hash"></i></th>
+                                            <th class="text-center align-center"><i class="feather icon-user"></i> Nom</th>
+                                            <th class="text-center align-center"><i class="feather icon-users"></i> Nom parent</th>
+                                            <th class="text-center align-center"><i class="feather icon-settings"></i> Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -135,102 +134,34 @@
                             </div>
                         </div>
 
-                        <!-- Onglet Matières -->
                         <div class="tab-pane fade" id="matieres">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5>Matières enseignées</h5>
-                                {% if user.is_staff %}
-                                <button class="btn btn-sm btn-primary">
+                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addSubjectModal">
                                     <i class="feather icon-plus"></i> Ajouter
                                 </button>
-                                {% endif %}
                             </div>
                             <div class="row">
-                                <!-- Données fictives -->
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card subject-card h-100">
+                                {% for i in "12" %}
+                                <div class="col-sm-6 col-md-3 mb-3">
+                                    <div class="card subject-card">
                                         <div class="card-body text-center">
-                                            <div class="mb-3">
-                                                <i class="feather icon-book f-30 text-c-blue"></i>
-                                            </div>
-                                            <h5>Mathématiques</h5>
-                                            <p class="text-muted">M. Konan</p>
-                                            <p><span class="badge badge-primary">4h/semaine</span></p>
+                                            <h6>Nom de matière {{ i }}</h6>
+                                            <p class="text-muted">Professeur {{ i }}</p>
+                                            <a href="#" class="btn btn-outline-primary btn-sm">Accéder</a>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card subject-card h-100">
-                                        <div class="card-body text-center">
-                                            <div class="mb-3">
-                                                <i class="feather icon-book f-30 text-c-green"></i>
-                                            </div>
-                                            <h5>Français</h5>
-                                            <p class="text-muted">Mme. Adjo</p>
-                                            <p><span class="badge badge-primary">5h/semaine</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card subject-card h-100">
-                                        <div class="card-body text-center">
-                                            <div class="mb-3">
-                                                <i class="feather icon-globe f-30 text-c-yellow"></i>
-                                            </div>
-                                            <h5>Histoire-Géo</h5>
-                                            <p class="text-muted">M. Diallo</p>
-                                            <p><span class="badge badge-primary">3h/semaine</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card subject-card h-100">
-                                        <div class="card-body text-center">
-                                            <div class="mb-3">
-                                                <i class="feather icon-activity f-30 text-c-red"></i>
-                                            </div>
-                                            <h5>Sciences</h5>
-                                            <p class="text-muted">Mme. Johnson</p>
-                                            <p><span class="badge badge-primary">2h/semaine</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card subject-card h-100">
-                                        <div class="card-body text-center">
-                                            <div class="mb-3">
-                                                <i class="feather icon-music f-30 text-c-purple"></i>
-                                            </div>
-                                            <h5>Éducation musicale</h5>
-                                            <p class="text-muted">M. Kouamé</p>
-                                            <p><span class="badge badge-primary">1h/semaine</span></p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-lg-4 mb-4">
-                                    <div class="card subject-card h-100">
-                                        <div class="card-body text-center">
-                                            <div class="mb-3">
-                                                <i class="feather icon-feather f-30 text-c-pink"></i>
-                                            </div>
-                                            <h5>Arts plastiques</h5>
-                                            <p class="text-muted">Mme. Adjo</p>
-                                            <p><span class="badge badge-primary">1h/semaine</span></p>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% endfor %}
                             </div>
                         </div>
 
-                        <!-- Onglet Emploi du temps -->
                         <div class="tab-pane fade" id="emploi-du-temps">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5>Emploi du temps</h5>
-                                {% if user.is_staff %}
-                                <button class="btn btn-sm btn-primary">
-                                    <i class="feather icon-edit"></i> Modifier
+                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addScheduleModal">
+                                    <i class="feather icon-plus"></i> Ajouter
                                 </button>
-                                {% endif %}
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered">
@@ -245,124 +176,115 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <!-- Données fictives -->
                                         <tr>
                                             <td>08h-09h</td>
-                                            <td rowspan="2" class="bg-primary text-white">Mathématiques<br>M. Konan</td>
-                                            <td rowspan="2" class="bg-success text-white">Français<br>Mme. Adjo</td>
-                                            <td rowspan="3" class="bg-warning">Sport<br>M. Traoré</td>
-                                            <td>Histoire<br>M. Diallo</td>
-                                            <td rowspan="2" class="bg-danger text-white">Sciences<br>Mme. Johnson</td>
+                                            <td>Math</td>
+                                            <td>Français</td>
+                                            <td>Sport</td>
+                                            <td>Histoire</td>
+                                            <td>Sciences</td>
                                         </tr>
                                         <tr>
                                             <td>09h-10h</td>
-                                            <td>Géographie<br>M. Diallo</td>
-                                        </tr>
-                                        <tr>
-                                            <td>10h-11h</td>
-                                            <td>Anglais<br>Mme. Smith</td>
-                                            <td>Mathématiques<br>M. Konan</td>
-                                            <td>Arts Plastiques<br>Mme. Adjo</td>
-                                            <td>Musique<br>M. Kouamé</td>
-                                        </tr>
-                                        <tr>
-                                            <td>11h-12h</td>
-                                            <td colspan="5" class="text-center bg-light">PAUSE DEJEUNER</td>
+                                            <td>Anglais</td>
+                                            <td>Math</td>
+                                            <td>Art</td>
+                                            <td>Musique</td>
+                                            <td>SVT</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
         <!-- [ Main Content ] end -->
-    </div>
-</div>
-   
-<!-- Modal d'ajout d'un éleve -->
-<div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog"
-     aria-labelledby="addStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addStudentModalLabel">Ajouter un éleve a {{ classroom.name }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" action="{% url 'schools:classrooms:add_student' classroom.school.pk classroom.pk %}">
-                {% csrf_token %}
-                <div class="modal-body">
-                        <div class="form-group">
-                            {{ addStudentForm.name }}
-                        </div>
-                        <span class="text-danger">{{ addStudentForm.name.errors }}</span>
-                        <input type="hidden" name="classroom" value="{{ classroom.pk }}">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Ajouter</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-   
-<!-- Modal d'ajout d'un parent -->
-<div class="modal fade" id="addParentModal" tabindex="-1" role="dialog"
-     aria-labelledby="addParentModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addParentModalLabel">Ajouter un parent à l'élève</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" action="{% url 'schools:classrooms:add_parent' classroom.school.pk classroom.pk %}">
-                {% csrf_token %}
-                <div class="modal-body">
-                    <div class="form-group">
-                        {{ addParentForm.first_name }}
-                    </div>
-                    <span class="text-danger">{{ addParentForm.first_name.errors }}</span>
-                    <div class="form-group">
-                        {{ addParentForm.last_name }}
-                    </div>
-                    <span class="text-danger">{{ addParentForm.last_name.errors }}</span>
-                    <div class="form-group">
-                        {{ addParentForm.email }}
-                    </div>
-                    <span class="text-danger">{{ addParentForm.email.errors }}</span>
-                    <div class="form-group">
-                        {{ addParentForm.phone }}
-                    </div>
-                    <span class="text-danger">{{ addParentForm.phone.errors }}</span>
-                    <input type="hidden" name="student" value="" id="id_student">
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Ajouter</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-{% endblock %}
 
-{% block stylesheets %}
-<style>
-    .subject-card {
-        transition: all 0.3s ease;
-        border-radius: 10px;
-    }
-    .subject-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-</style>
+        <!-- Modal Ajout Matière -->
+        <div class="modal fade" id="addSubjectModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Ajouter une matière</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="#">
+                            {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Nom de la matière</label>
+                                <input type="text" class="form-control" name="subject_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Professeur</label>
+                                <input type="text" class="form-control" name="teacher_name" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal Ajout Emploi du Temps -->
+        <div class="modal fade" id="addScheduleModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Ajouter une séance</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="#">
+                            {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Matière</label>
+                                <select class="form-control" name="subject">
+                                    <option value="">-- Choisir une matière --</option>
+                                    <option>Mathématiques</option>
+                                    <option>Français</option>
+                                    <option>Histoire</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Jour</label>
+                                <select class="form-control" name="day">
+                                    <option>Lundi</option>
+                                    <option>Mardi</option>
+                                    <option>Mercredi</option>
+                                    <option>Jeudi</option>
+                                    <option>Vendredi</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Heure de début</label>
+                                <input type="time" class="form-control" name="start_time">
+                            </div>
+                            <div class="form-group">
+                                <label>Heure de fin</label>
+                                <input type="time" class="form-control" name="end_time">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
@@ -371,12 +293,10 @@
         const input = document.getElementById('id_student');
         input.value = parentId;
     }
-    
     let table = new DataTable('#student-table', {
         language: {
             url: '//cdn.datatables.net/plug-ins/2.3.0/i18n/fr-FR.json',
         },
     });
-    
 </script>
 {% endblock javascripts %}

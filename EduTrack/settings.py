@@ -29,15 +29,15 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'users.User'  # Specify the custom user model
 
-EMAIL_HOST='localhost'
-EMAIL_PORT='9025'
+# EMAIL_HOST='localhost'
+# EMAIL_PORT='9025'
 
-# EMAIL_HOST='smtp.gmail.com'
-# EMAIL_PORT=587
-# EMAIL_HOST_USER='narufruc@gmail.com'
-# EMAIL_HOST_PASSWORD='ddpd msaa nggt ltuc'
-# EMAIL_USE_TLS=True
-# EMAIL_TIMEOUT=30
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_HOST_USER='narufruc@gmail.com'
+EMAIL_HOST_PASSWORD='ddpd msaa nggt ltuc'
+EMAIL_USE_TLS=True
+EMAIL_TIMEOUT=30
 
 
 # Application definition
