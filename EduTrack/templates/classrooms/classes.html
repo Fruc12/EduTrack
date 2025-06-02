@@ -128,16 +128,60 @@
     </div>
 </div>
     
-<!-- Modal d'ajout d'une classe (existant) -->
+<!-- Modal d'ajout d'une classe -->
 <div class="modal fade" id="addClassroomModal" tabindex="-1" role="dialog"
      aria-labelledby="addClassroomModalLabel" aria-hidden="true">
-    <!-- ... votre modal existant inchangé ... -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addClassroomModalLabel">Ajouter une nouvelle classe</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                        <div class="form-group">
+                            {{ addForm.name }}
+                        </div>
+                        <span class="text-danger">{{ addForm.name.errors }}</span>
+                        <div class="form-group">
+                            {{ addForm.level }}
+                        </div>
+                        <span class="text-danger">{{ addForm.period.errors }}</span>
+                       <input type="hidden" name="school" value="{{ school.pk }}">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-
-<!-- Modal suppression d'une classe (existant) -->
-<div class="modal fade" id="deleteClassroomModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <!-- ... votre modal existant inchangé ... -->
-</div>    
+<!-- Modal suppression d'une classe-->
+<div class="modal fade" id="deleteClassroomModal" tabindex="-1" role="dialog" aria-labelledby="deleteClassroomModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteClassroomModalLabel">Vous allez tout perdre concernant cette classe</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Voulez-vous supprimer cette classe ?</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                <form method="POST" id="classroomDeleteForm">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-danger" value="Supprimer">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}
 
 {% block javascripts %}
