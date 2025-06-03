@@ -204,6 +204,77 @@
             </div>
         </div>
         <!-- [ Main Content ] end -->
+    
+        <!-- Modal d'ajout d'un éleve -->
+        <div class="modal fade" id="addStudentModal" tabindex="-1" role="dialog"
+             aria-labelledby="addStudentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addStudentModalLabel">Ajouter un éleve a {{ classroom.name }}</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{% comment %}{% url 'schools:classrooms:add_student' classroom.school_year.school.pk classroom.pk %}{% endcomment %}">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                                <div class="form-group">
+                                    {{ addStudentForm.name }}
+                                </div>
+                                <span class="text-danger">{{ addStudentForm.name.errors }}</span>
+                                <input type="hidden" name="classroom" value="{{ classroom.pk }}">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+           
+        <!-- Modal d'ajout d'un parent -->
+        <div class="modal fade" id="addParentModal" tabindex="-1" role="dialog"
+             aria-labelledby="addParentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addParentModalLabel">Ajouter un parent a l'élève</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="POST" action="{% comment %}{% url 'schools:classrooms:add_parent' classroom.school.pk classroom.pk %}{% endcomment %}">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="form-group">
+                                {{ addParentForm.first_name }}
+                            </div>
+                            <span class="text-danger">{{ addParentForm.first_name.errors }}</span>
+                            <div class="form-group">
+                                {{ addParentForm.last_name }}
+                            </div>
+                            <span class="text-danger">{{ addParentForm.last_name.errors }}</span>
+                            <div class="form-group">
+                                {{ addParentForm.email }}
+                            </div>
+                            <span class="text-danger">{{ addParentForm.email.errors }}</span>
+                            <div class="form-group">
+                                {{ addParentForm.phone }}
+                            </div>
+                            <span class="text-danger">{{ addParentForm.phone.errors }}</span>
+                            <input type="hidden" name="student" value="" id="id_student">
+                            {{ addParentForm.student.errors }}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal Ajout Matière -->
         <div class="modal fade" id="addSubjectModal" tabindex="-1" role="dialog">
