@@ -11,7 +11,7 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <div>
                 <div class="page-header-title">
-                    <h5 class="m-b-10">{{ school.name }}</h5>
+                    <h5 class="m-b-10">{{ schoolYear.school.name }}</h5>
                 </div>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item">
@@ -20,12 +20,12 @@
                         </a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="#!">Mes écoles / {{ school.name }}</a>
+                        <a href="#!">Mes écoles / {{ schoolYear.school.name }}</a>
                     </li>
                 </ul>
             </div>
             <!-- Bouton conditionnel -->
-            <div id="addClassroomButton" style="display:none;">
+            <div id="addClassroomButton">
                 <a data-toggle="modal" data-target="#addClassroomModal" class="d-sm-inline-block btn btn-sm btn-primary shadow-sm">
                     <i class="fas fa-plus fa-sm text-white-50"></i> Ajouter une classe
                 </a>
@@ -33,96 +33,58 @@
         </div>
         <!-- [ breadcrumb ] end -->
 
-        <!-- [ Sélection année scolaire ] -->
-        <div class="row" id="yearSelectionSection">
-            <div class="col-md-6 mx-auto">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-white">
-                        <h5>Sélectionnez une année scolaire</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>Année scolaire</label>
-                            <select class="form-control" id="schoolYearSelect">
-                                <option value="">-- Sélectionnez --</option>
-                                <option value="2023-2024">2023-2024</option>
-                                <option value="2024-2025">2024-2025</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-success" id="confirmYearBtn">
-                            <i class="feather icon-check"></i> Confirmer
-                        </button>
-                        
-                        <hr>
-                        
-                        <h5>Ou créez une nouvelle année</h5>
-                        <div class="form-group">
-                            <label>Nom de la nouvelle année (ex: 2024-2025)</label>
-                            <input type="text" class="form-control" id="newYearName">
-                        </div>
-                        <button class="btn btn-primary" id="createYearBtn">
-                            <i class="feather icon-plus"></i> Créer
-                        </button>
-                    </div>
-                </div>
-            </div>
+        <div class="alert alert-info">
+            Année scolaire sélectionnée: <strong>{{ schoolYear.scname }}</strong>
+            <a data-toggle="modal" data-target="#changeYearModal" class="float-right btn btn-sm btn-outline-primary shadow-sm">
+                <i class="feather icon-edit"></i> Changer
+            </a>
         </div>
-
-        <!-- [ Main Content - masqué initialement ] -->
-        <div id="classContent" style="display:none;">
-            <div class="alert alert-info">
-                Année scolaire sélectionnée: <strong id="currentYearDisplay">2024-2025</strong>
-                <a href="#" class="float-right" id="changeYearLink">
-                    <i class="feather icon-edit"></i> Changer
-                </a>
-            </div>
-            
-            <div class="row">
-                {% for level,level_name in classroom.LEVELS|slice:"1:" %}
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow">
-                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-primary">{{ level_name }}</h6>
-                            <button class="btn btn-sm btn-outline-primary" data-toggle="collapse" data-target="#cardBody{{ level }}" aria-expanded="false" aria-controls="cardBody1">
-                                <i class="feather icon-arrow-down"></i> Voir plus
-                            </button>
-                        </div>
-                        <div id="cardBody{{ level }}" class="collapse">
-                            <div class="card-body">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Nom de la classe</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% get_classes_by_level school level as classrooms %}
-                                    {% for classroom in classrooms %}
-                                        <tr>
-                                            <td class="align-center text-center"> <a class="btn btn-sm btn-primary" href="{% url 'schools:classrooms:show' school.pk classroom.pk %}">{{ classroom.name }}</a></td>
-                                            <td class="align-center text-center">
-                                                <div class="card-header-right">
-                                                    <div class="btn-group card-option">
-                                                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            <i class="feather icon-more-horizontal"></i>
-                                                        </button>
-                                                        <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                                                            <li class="dropdown-item"><a data-toggle="modal" data-target="#deleteClassroomModal" href="#!" onclick="setDeleteClassroomId({{ classroom.pk }})"><i class="feather icon-trash"></i>Supprimer</a></li>
-                                                        </ul>
-                                                    </div>
+        
+        <div class="row">
+            {% for level,level_name in classroom.LEVELS|slice:"1:" %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">{{ level_name }}</h6>
+                        <button class="btn btn-sm btn-outline-primary" data-toggle="collapse" data-target="#cardBody{{ level }}" aria-expanded="false" aria-controls="cardBody1">
+                            <i class="feather icon-arrow-down"></i> Voir plus
+                        </button>
+                    </div>
+                    <div id="cardBody{{ level }}" class="collapse">
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nom de la classe</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% get_classes_by_level schoolYear level as classrooms %}
+                                {% for classroom in classrooms %}
+                                    <tr>
+                                        <td class="align-center text-center"> <a class="btn btn-sm btn-primary" href="{% url 'schools:classrooms:show' schoolYear.school.pk classroom.pk %}">{{ classroom.name }}</a></td>
+                                        <td class="align-center text-center">
+                                            <div class="card-header-right">
+                                                <div class="btn-group card-option">
+                                                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="feather icon-more-horizontal"></i>
+                                                    </button>
+                                                    <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                                                        <li class="dropdown-item"><a data-toggle="modal" data-target="#deleteClassroomModal" href="#!" onclick="setDeleteClassroomId({{ classroom.pk }})"><i class="feather icon-trash"></i>Supprimer</a></li>
+                                                    </ul>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
         <!-- [ Main Content end ] -->
     </div>
@@ -142,15 +104,15 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="modal-body">
-                        <div class="form-group">
-                            {{ addForm.name }}
-                        </div>
-                        <span class="text-danger">{{ addForm.name.errors }}</span>
-                        <div class="form-group">
-                            {{ addForm.level }}
-                        </div>
-                        <span class="text-danger">{{ addForm.period.errors }}</span>
-                       <input type="hidden" name="school" value="{{ school.pk }}">
+                    <div class="form-group">
+                        {{ addForm.name }}
+                    </div>
+                    <span class="text-danger">{{ addForm.name.errors }}</span>
+                    <div class="form-group">
+                        {{ addForm.level }}
+                    </div>
+                    <span class="text-danger">{{ addForm.period.errors }}</span>
+                    <input type="hidden" name="school_year" value="{{ schoolYear.pk }}">
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Ajouter</button>
@@ -182,62 +144,71 @@
         </div>
     </div>
 </div>
+<!-- Modal suppression d'une classe-->
+<div class="modal fade" id="changeYearModal" tabindex="-1" role="dialog" aria-labelledby="changeYearModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Sélectionnez ou Ajoutez une année scolaire</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6 class="modal-title">Sélectionner l'année scolaire</h6>
+                <form method="GET" action="{% url 'schools:classrooms:index' schoolYear.school.pk  %}">
+                    <div class="form-group">
+                        {{ changeYearForm.school_years }}
+                    </div>
+                    <input type="submit" value="Confirmer" class="btn btn-success">
+                </form>
+                <h6 class="modal-title modal-header">Ajouter une année scolaire</h6>
+                <form method="POST" action="{% url 'schools:classrooms:add_year' schoolYear.school.pk %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_name">Année académique</label>
+                        {{ addYearForm.name }}
+                        <span class="text-danger">{{ addYearForm.name.errors }}</span>
+                    </div>
+                    <div class="row">
+                        <div class="col form-group">
+                            <label for="id_start_date">Date de début</label>
+                            {{ addYearForm.start_date }}
+                            <span class="text-danger">{{ addYearForm.start_date.errors }}</span>
+                        </div>
+                        <div class="col form-group">
+                            <label for="id_end_date">Date de fin</label>
+                            {{ addYearForm.end_date }}
+                            <span class="text-danger">{{ addYearForm.end_date.errors }}</span>
+                        </div>
+                    </div>
+                    <input type="hidden" name="school" value="{{ schoolYear.school.pk }}">
+                    <input type="submit" value="Ajouter" class="btn btn-success">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- [ Sélection année scolaire ] -->
+<div class="row" id="yearSelectionSection">
+    <div class="col-md-6 mx-auto">
+        <div class="card shadow">
+
+        </div>
+    </div>
+</div>
 {% endblock content %}
 
 {% block javascripts %}
 <script>
     function setDeleteClassroomId(classId) {
         const form = document.getElementById('classroomDeleteForm');
-        form.action = `/schools/{{ school.pk }}/classrooms/${classId}/delete/`;
+        form.action = `/schools/{{ schoolYear.school.pk }}/classrooms/${classId}/delete/`;
     }
-
-    // Nouveau code pour la gestion de l'année scolaire (front-only)
-    document.addEventListener('DOMContentLoaded', function() {
-        const yearSelectionSection = document.getElementById('yearSelectionSection');
-        const classContent = document.getElementById('classContent');
-        const addClassroomButton = document.getElementById('addClassroomButton');
-        const confirmYearBtn = document.getElementById('confirmYearBtn');
-        const createYearBtn = document.getElementById('createYearBtn');
-        const schoolYearSelect = document.getElementById('schoolYearSelect');
-        const newYearName = document.getElementById('newYearName');
-        const currentYearDisplay = document.getElementById('currentYearDisplay');
-        const changeYearLink = document.getElementById('changeYearLink');
-
-        // Confirmer une année existante
-        confirmYearBtn.addEventListener('click', function() {
-            if (schoolYearSelect.value) {
-                currentYearDisplay.textContent = schoolYearSelect.value;
-                yearSelectionSection.style.display = 'none';
-                classContent.style.display = 'block';
-                addClassroomButton.style.display = 'block';
-            } else {
-                alert('Veuillez sélectionner une année scolaire');
-            }
-        });
-
-        // Créer une nouvelle année
-        createYearBtn.addEventListener('click', function() {
-            if (newYearName.value) {
-                currentYearDisplay.textContent = newYearName.value;
-                yearSelectionSection.style.display = 'none';
-                classContent.style.display = 'block';
-                addClassroomButton.style.display = 'block';
-                // Ajouter l'année à la liste des options (simulation front)
-                const newOption = new Option(newYearName.value, newYearName.value);
-                schoolYearSelect.add(newOption);
-                newYearName.value = '';
-            } else {
-                alert('Veuillez entrer un nom pour la nouvelle année');
-            }
-        });
-
-        // Changer d'année
-        changeYearLink.addEventListener('click', function(e) {
-            e.preventDefault();
-            yearSelectionSection.style.display = 'block';
-            classContent.style.display = 'none';
-            addClassroomButton.style.display = 'none';
-        });
-    });
 </script>
 {% endblock javascripts %}

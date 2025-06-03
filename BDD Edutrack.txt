@@ -11,11 +11,20 @@ School:
 	name
 	created_at
 	updated_at
+
 SchoolUser:
     id
     user_id
     school_id
     role (director, staff)
+
+SchoolYear:
+	id
+	name (ex: 2024-2025)
+	start_date
+	end_date
+	created_at
+	updated_at
 
 Class:
 	id

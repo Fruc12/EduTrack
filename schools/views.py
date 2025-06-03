@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
+from django.utils import timezone
+
 from .forms import SchoolForm
-from .models import SchoolUser, School
+from .models import SchoolUser, School, SchoolYear
 from django.contrib import messages
 
 
@@ -13,6 +15,12 @@ def index_school(request):
         form = SchoolForm(request.POST)
         if form.is_valid():
             school = form.save()
+            SchoolYear(
+                school=school,
+                start_date=timezone.datetime(day=1, month=9, year=timezone.now().year),
+                end_date=timezone.datetime(day=1, month=7, year=timezone.now().year+1),
+                name=f"{timezone.now().year}-{timezone.now().year+1}"
+            ).save()
             school_user = SchoolUser(
                 user = request.user,
                 school = school,

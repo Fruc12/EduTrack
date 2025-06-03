@@ -1,6 +1,6 @@
 from django import forms
 
-from schools.models import School
+from schools.models import School, SchoolYear
 from .models import Classroom
 
 class ClassroomForm(forms.ModelForm):
@@ -19,7 +19,7 @@ class ClassroomForm(forms.ModelForm):
             }
         ))
 
-    school = forms.ModelChoiceField(queryset=School.objects.all(),
+    school_year = forms.ModelChoiceField(queryset=SchoolYear.objects.all(),
         widget=forms.Select(
             attrs={
                 "class": "form-control"
@@ -28,4 +28,4 @@ class ClassroomForm(forms.ModelForm):
 
     class Meta:
         model = Classroom
-        fields = ('name', 'level', 'school')
+        fields = ('name', 'level', 'school_year')
