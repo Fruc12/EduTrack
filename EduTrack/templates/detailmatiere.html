@@ -83,19 +83,52 @@
                         <div class="tab-pane fade show active" id="notes">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5>Gestion des notes</h5>
-                                <button class="btn btn-sm btn-primary">
+                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addEvaluationModal">
                                     <i class="feather icon-plus"></i> Ajouter une évaluation
                                 </button>
                             </div>
-                            <div class="alert alert-info">
-                                <h5>Contenu fictif - À implémenter</h5>
-                                <p>Cette section permettra de :</p>
-                                <ul>
-                                    <li>Créer des évaluations</li>
-                                    <li>Saisir les notes des élèves</li>
-                                    <li>Calculer les moyennes</li>
-                                    <li>Générer des bulletins</li>
-                                </ul>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover w-100" style="border-collapse: collapse;">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2" style="width: 15%; border-right: 1px solid #dee2e6; vertical-align: middle;">ÉLÈVES</th>
+                                            <th colspan="4" style="border-right: 1px solid #dee2e6; text-align: center;">INTERROGATIONS</th>
+                                            <th colspan="2" style="border-right: 1px solid #dee2e6; text-align: center;">DEVOIRS</th>
+                                            <th colspan="2" style="text-align: center;">MOYENNE</th>
+                                        </tr>
+                                        <tr>
+                                            <!-- Interrogations -->
+                                            <th style="width: 8%; border-right: 1px solid #dee2e6; text-align: center;">I1</th>
+                                            <th style="width: 8%; border-right: 1px solid #dee2e6; text-align: center;">I2</th>
+                                            <th style="width: 8%; border-right: 1px solid #dee2e6; text-align: center;">I3</th>
+                                            <th style="width: 8%; border-right: 1px solid #dee2e6; text-align: center;">I4</th>
+                                            
+                                            <!-- Devoirs -->
+                                            <th style="width: 8%; border-right: 1px solid #dee2e6; text-align: center;">D1</th>
+                                            <th style="width: 8%; border-right: 1px solid #dee2e6; text-align: center;">D2</th>
+                                            
+                                            <!-- Moyennes -->
+                                            <th style="width: 10%; border-right: 1px solid #dee2e6; text-align: center;">NON COEFF.</th>
+                                            <th style="width: 10%; text-align: center;">COEFFIÉE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in "12345" %}
+                                        <tr>
+                                            <td style="border-right: 1px solid #dee2e6;">Nom {{ i }}</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="text-align: center;">-</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
@@ -282,17 +315,109 @@
         <!-- [ Main Content ] end -->
     </div>
 </div>
+
+<!-- Modal pour ajouter une évaluation -->
+<div class="modal fade" id="addEvaluationModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajouter une évaluation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="evaluationForm">
+                    <div class="form-group">
+                        <label>Type d'évaluation</label>
+                        <select class="form-control" id="evalType">
+                            <option value="interro">Interrogation</option>
+                            <option value="devoir">Devoir</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nom de l'évaluation</label>
+                        <input type="text" class="form-control" id="evalName" placeholder="Ex: I3, D1, etc.">
+                    </div>
+                    <div class="form-group">
+                        <label>Note maximale</label>
+                        <input type="number" class="form-control" id="maxNote" value="20" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Coefficient</label>
+                        <input type="number" class="form-control" id="evalCoef" value="1" min="0.1" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" class="form-control" id="evalDate">
+                    </div>
+                    <div class="form-group">
+                        <label>Notes des élèves</label>
+                        <div class="student-notes-container" style="max-height: 200px; overflow-y: auto;">
+                            {% for i in "12345" %}
+                            <div class="d-flex align-items-center mb-2">
+                                <span style="width: 80px;">Nom {{ i }}:</span>
+                                <input type="number" class="form-control form-control-sm ml-2" 
+                                       style="width: 80px;" min="0" step="0.5" placeholder="Note">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" id="saveEvaluation">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}
 <script>
 $(document).ready(function() {
-    // Simulation d'enregistrement
-    $('#savePresenceBtn').click(function() {
-        alert('Fonctionnalité fictive - En production, cela enregistrerait les données en base');
+    // Définir la date du jour par défaut
+    $('#evalDate').val(new Date().toISOString().split('T')[0]);
+
+    // Gestion de l'enregistrement
+    $('#saveEvaluation').click(function() {
+        const evalData = {
+            type: $('#evalType').val(),
+            name: $('#evalName').val(),
+            maxNote: $('#maxNote').val(),
+            coefficient: $('#evalCoef').val(),
+            date: $('#evalDate').val(),
+            notes: []
+        };
+
+        // Validation
+        if (!evalData.name) {
+            alert('Veuillez donner un nom à votre évaluation');
+            return;
+        }
+
+        // Récupérer les notes
+        $('.student-notes-container input').each(function(index) {
+            evalData.notes.push({
+                student: 'Nom ' + (index + 1),
+                note: $(this).val() || null
+            });
+        });
+
+        console.log('Données à enregistrer:', evalData);
+        $('#addEvaluationModal').modal('hide');
+        $('#evaluationForm')[0].reset();
+        
+        alert('Évaluation enregistrée avec succès!');
     });
 
-    // Style pour les radios
+    // Gestion des présences
+    $('#savePresenceBtn').click(function() {
+        alert('Fonctionnalité fictive - En production, cela enregistrerait les présences');
+    });
+
+    // Style pour les radios de présence
     $('.presence-radio').change(function() {
         $(this).closest('tr').find('.form-check-input').removeClass('bg-success bg-danger bg-warning');
         if ($(this).val() === 'present') {
@@ -307,22 +432,46 @@ $(document).ready(function() {
 </script>
 
 <style>
-.form-check-input {
-    width: 1.2em;
-    height: 1.2em;
-    cursor: pointer;
-}
-.form-check-input.bg-success:checked {
-    background-color: #28a745;
-    border-color: #28a745;
-}
-.form-check-input.bg-danger:checked {
-    background-color: #dc3545;
-    border-color: #dc3545;
-}
-.form-check-input.bg-warning:checked {
-    background-color: #ffc107;
-    border-color: #ffc107;
-}
+    /* Style pour les tableaux */
+    .table-responsive {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    table {
+        table-layout: fixed;
+    }
+    th, td {
+        padding: 8px 12px;
+    }
+    
+    /* Style pour le modal */
+    .student-notes-container {
+        border: 1px solid #dee2e6;
+        padding: 10px;
+        border-radius: 4px;
+    }
+    
+    /* Style pour les boutons radio */
+    .form-check-input {
+        width: 1.2em;
+        height: 1.2em;
+        cursor: pointer;
+    }
+    .form-check-input.bg-success:checked {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    .form-check-input.bg-danger:checked {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+    .form-check-input.bg-warning:checked {
+        background-color: #ffc107;
+        border-color: #ffc107;
+    }
+    .table th {
+        white-space: nowrap;
+    }
 </style>
 {% endblock javascripts %}
