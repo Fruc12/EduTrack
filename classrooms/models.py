@@ -14,3 +14,22 @@ class Classroom(models.Model):
 
     def __str__(self):
         return self.name
+
+class Course(models.Model):
+    name = models.CharField(max_length=100)
+    coef = models.IntegerField()
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, related_name='courses')
+
+    def __str__(self):
+        return self.name
+
+class TimeTable(models.Model):
+    DAYS = [ ('', 'Veuillez choisir un jour de la semaine...'), (0, 'Lundi'), (1, 'Mardi'), (2, 'Mercredi'), (3, 'Jeudi'), (4, 'Vendredi'), (5, 'Samedi') ]
+    # name = models.CharField(max_length=256)
+    day = models.IntegerField(choices=DAYS)
+    begin_time = models.TimeField()
+    end_time = models.TimeField()
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='timeTables')
+
+    def __str__(self):
+        return str(self.begin_time) + ' ' + str(self.day)

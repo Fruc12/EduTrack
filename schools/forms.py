@@ -62,12 +62,13 @@ class SchoolYearForm(forms.ModelForm):
 
 class ChangeYearForm(forms.Form):
     school_years = forms.ModelChoiceField(
-        queryset=SchoolYear.objects.none(),  # Initialisé vide
+        queryset=SchoolYear.objects.none(),
+        empty_label="Choisissez une année académique...",
         widget=forms.Select(
             attrs={
                 'class': 'form-control',
             }
-        )  # widget adapté
+        )
     )
 
     def __init__(self, *args, **kwargs):

@@ -11,7 +11,7 @@
                 <div class="row align-items-center">
                     <div class="col-md-12">
                         <div class="page-header-title">
-                            <h5 class="m-b-10">Administration Scolaire</h5>
+                            <h5 class="m-b-10">Administration Scolaire - Lycée Descartes</h5>
                         </div>
                         <ul class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
@@ -33,7 +33,7 @@
                             <i class="feather icon-users text-c-blue"></i>
                         </div>
                         <div class="col-sm-9">
-                            <h4>{{ eleves.count }}</h4>
+                            <h4>327</h4>
                             <h6>Élèves</h6>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                             <i class="feather icon-user-plus text-c-yellow"></i>
                         </div>
                         <div class="col-sm-9">
-                            <h4>{{ parents.count }}</h4>
+                            <h4>285</h4>
                             <h6>Parents</h6>
                         </div>
                     </div>
@@ -61,7 +61,7 @@
                             <i class="feather icon-book text-c-green"></i>
                         </div>
                         <div class="col-sm-9">
-                            <h4>{{ classes.count }}</h4>
+                            <h4>12</h4>
                             <h6>Classes</h6>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                             <i class="feather icon-alert-octagon text-c-red"></i>
                         </div>
                         <div class="col-sm-9">
-                            <h4>{{ absences_jour.count }}</h4>
+                            <h4>8</h4>
                             <h6>Absences aujourd'hui</h6>
                         </div>
                     </div>
@@ -91,22 +91,22 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <a href="" class="btn btn-primary btn-block">
+                                <a href="#" class="btn btn-primary btn-block">
                                     <i class="feather icon-user-plus"></i> Ajouter un élève
                                 </a>
                             </div>
                             <div class="col-md-3">
-                                <a href="" class="btn btn-success btn-block">
+                                <a href="#" class="btn btn-success btn-block">
                                     <i class="feather icon-edit"></i> Saisir une note
                                 </a>
                             </div>
                             <div class="col-md-3">
-                                <a href="" class="btn btn-info btn-block">
+                                <a href="#" class="btn btn-info btn-block">
                                     <i class="feather icon-calendar"></i> Modifier l'EDT
                                 </a>
                             </div>
                             <div class="col-md-3">
-                                <a href="" class="btn btn-warning btn-block">
+                                <a href="#" class="btn btn-warning btn-block">
                                     <i class="feather icon-file-text"></i> Générer bulletins
                                 </a>
                             </div>
@@ -123,18 +123,46 @@
                     </div>
                     <div class="card-body">
                         <div class="latest-update-box">
-                            {% for activite in activites %}
                             <div class="row p-b-20">
                                 <div class="col-auto text-right update-meta">
-                                    <p class="text-muted m-b-0">{{ activite.date|date:"H:i" }}</p>
-                                    <i class="bg-{{ activite.couleur }} update-icon">{{ activite.icone }}</i>
+                                    <p class="text-muted m-b-0">09:15</p>
+                                    <i class="bg-primary update-icon feather icon-user-plus"></i>
                                 </div>
                                 <div class="col">
-                                    <h6>{{ activite.titre }}</h6>
-                                    <p class="text-muted m-b-0">{{ activite.description }}</p>
+                                    <h6>Nouvel élève inscrit</h6>
+                                    <p class="text-muted m-b-0">Marie Dupont en 2nde A</p>
                                 </div>
                             </div>
-                            {% endfor %}
+                            <div class="row p-b-20">
+                                <div class="col-auto text-right update-meta">
+                                    <p class="text-muted m-b-0">10:30</p>
+                                    <i class="bg-success update-icon feather icon-edit"></i>
+                                </div>
+                                <div class="col">
+                                    <h6>Notes ajoutées</h6>
+                                    <p class="text-muted m-b-0">Contrôle de Mathématiques en 1ère S</p>
+                                </div>
+                            </div>
+                            <div class="row p-b-20">
+                                <div class="col-auto text-right update-meta">
+                                    <p class="text-muted m-b-0">11:45</p>
+                                    <i class="bg-warning update-icon feather icon-alert-triangle"></i>
+                                </div>
+                                <div class="col">
+                                    <h6>Absence non justifiée</h6>
+                                    <p class="text-muted m-b-0">Jean Martin en Terminale ES</p>
+                                </div>
+                            </div>
+                            <div class="row p-b-20">
+                                <div class="col-auto text-right update-meta">
+                                    <p class="text-muted m-b-0">14:20</p>
+                                    <i class="bg-info update-icon feather icon-calendar"></i>
+                                </div>
+                                <div class="col">
+                                    <h6>EDT modifié</h6>
+                                    <p class="text-muted m-b-0">Changement salle pour Physique-Chimie</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -158,18 +186,30 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for absence in absences_recentes %}
                                     <tr>
-                                        <td>{{ absence.eleve.nom }}</td>
-                                        <td>{{ absence.eleve.classe }}</td>
-                                        <td>{{ absence.date|date:"d/m/Y" }}</td>
-                                        <td>
-                                            <span class="badge badge-{% if absence.justifiee %}warning{% else %}danger{% endif %}">
-                                                {% if absence.justifiee %}Justifiée{% else %}Non justifiée{% endif %}
-                                            </span>
-                                        </td>
+                                        <td>Jean Martin</td>
+                                        <td>Terminale ES</td>
+                                        <td>17/06/2025</td>
+                                        <td><span class="badge badge-danger">Non justifiée</span></td>
                                     </tr>
-                                    {% endfor %}
+                                    <tr>
+                                        <td>Sophie Leroy</td>
+                                        <td>1ère S</td>
+                                        <td>16/06/2025</td>
+                                        <td><span class="badge badge-warning">Justifiée</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Thomas Dubois</td>
+                                        <td>2nde B</td>
+                                        <td>16/06/2025</td>
+                                        <td><span class="badge badge-warning">Justifiée</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Emma Rousseau</td>
+                                        <td>Terminale L</td>
+                                        <td>15/06/2025</td>
+                                        <td><span class="badge badge-danger">Non justifiée</span></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -181,20 +221,41 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <h5>Statistiques des notes</h5>
+                        <h5>Statistiques des notes - Toutes classes</h5>
                         <div class="card-header-right">
                             <div class="btn-group">
                                 <select class="form-control form-control-sm" id="classe-select">
                                     <option>Toutes les classes</option>
-                                    {% for classe in classes %}
-                                    <option value="{{ classe.id }}">{{ classe.nom }}</option>
-                                    {% endfor %}
+                                    <option>2nde A</option>
+                                    <option>2nde B</option>
+                                    <option>1ère S</option>
+                                    <option>1ère ES</option>
+                                    <option>Terminale S</option>
+                                    <option>Terminale ES</option>
                                 </select>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <div id="stat-notes-chart"></div>
+                        <div class="row text-center mt-4">
+                            <div class="col-md-3">
+                                <h5>15.2</h5>
+                                <p class="text-muted">Moyenne générale</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>87%</h5>
+                                <p class="text-muted">Taux de réussite</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>12.5%</h5>
+                                <p class="text-muted">Mentions TB</p>
+                            </div>
+                            <div class="col-md-3">
+                                <h5>3</h5>
+                                <p class="text-muted">Élèves en difficulté</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -213,8 +274,10 @@
     var options = {
         chart: {
             type: 'bar',
-            height: 350
+            height: 350,
+            toolbar: { show: false }
         },
+        colors: ['#4680ff'],
         plotOptions: {
             bar: {
                 horizontal: false,
@@ -222,15 +285,55 @@
                 endingShape: 'rounded'
             },
         },
+        dataLabels: {
+            enabled: false
+        },
         series: [{
             name: 'Nombre d\'élèves',
-            data: [10, 15, 25, 30, 20, 10, 5]
+            data: [2, 8, 15, 32, 45, 28, 12]
         }],
         xaxis: {
-            categories: ['0-5', '5-8', '8-10', '10-12', '12-15', '15-18', '18-20']
+            categories: ['0-5', '5-8', '8-10', '10-12', '12-15', '15-18', '18-20'],
+            labels: {
+                style: {
+                    fontSize: '12px'
+                }
+            }
+        },
+        yaxis: {
+            title: {
+                text: 'Nombre d\'élèves'
+            }
+        },
+        tooltip: {
+            y: {
+                formatter: function (val) {
+                    return val + " élèves"
+                }
+            }
         }
     }
     var chart = new ApexCharts(document.querySelector("#stat-notes-chart"), options);
     chart.render();
+
+    // Simulation changement de classe
+    document.getElementById('classe-select').addEventListener('change', function() {
+        // Animation de chargement
+        document.querySelector("#stat-notes-chart").innerHTML = '<div class="text-center p-4"><div class="spinner-border text-primary"></div></div>';
+        
+        // Simulation requête AJAX
+        setTimeout(function() {
+            // Données aléatoires pour la démo
+            const randomData = Array.from({length: 7}, () => Math.floor(Math.random() * 20) + 5);
+            
+            chart.updateSeries([{
+                data: randomData
+            }]);
+            
+            // Mise à jour des stats
+            document.querySelector('.card-header h5').textContent = 
+                'Statistiques des notes - ' + (this.value || 'Toutes les classes');
+        }, 800);
+    });
 </script>
 {% endblock %}

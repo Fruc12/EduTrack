@@ -12,8 +12,8 @@ from parents.forms import StudentForm, ParentForm
 from parents.models import Parent, Student
 from schools.models import School, SchoolYear
 from users.models import User
-from .forms import ClassroomForm
-from .models import Classroom
+from .forms import ClassroomForm, CourseForm, TimeTableForm
+from .models import Classroom, Course
 from schools.forms import SchoolYearForm
 from schools.forms import ChangeYearForm
 
@@ -50,15 +50,28 @@ def delete_classroom(request, school_pk, classroom_pk):
         )
 
 
-def show_classroom(request, school_pk, classroom_pk):
+def show_classroom(request, school_pk, classroom_pk, course_form=None, time_table_form=None):
     get_object_or_404(School, pk=school_pk)
     classroom = get_object_or_404(Classroom, pk=classroom_pk)
     add_student_form = StudentForm()
     add_parent_form = ParentForm()
+    courses = classroom.courses.all()
+    time_tables = []
+    for course in courses:
+        for timeTable in course.timeTables.all():
+            time_tables.append(timeTable)
+    # time_tables.sort()
+    print(time_tables)
     context = {
         'addStudentForm': add_student_form,
         'addParentForm': add_parent_form,
-        "classroom" : classroom
+        "classroom" : classroom,
+        "courseForm": CourseForm() if course_form is None else course_form,
+        "timeTableForm": TimeTableForm(classroom_pk=classroom_pk) if time_table_form is None else time_table_form,
+        "courses": courses,
+        "timeTables": time_tables,
+        "DAYS": time_tables[0].DAYS
+
     }
     return render(request, "classrooms/classroom-details.html", context)
 
@@ -124,7 +137,6 @@ def register_parent_mailer(parent):
     mail.content_subtype = 'html'
     return mail.send()
 
-
 def add_school_year(request, school_pk):
     if request.method == 'POST':
         form = SchoolYearForm(request.POST)
@@ -134,3 +146,25 @@ def add_school_year(request, school_pk):
         else:
             return index_classrooms(request, request.POST.get('school'), form)
     return redirect('schools:classrooms:index', school_pk)
+
+def add_course(request, school_pk, classroom_pk):
+    if request.method == 'POST':
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            print("Created")
+            return redirect('schools:classrooms:show', school_pk, classroom_pk)
+        else:
+            return show_classroom(request, school_pk, classroom_pk, course_form=form)
+    return redirect('schools:classrooms:show', school_pk, classroom_pk)
+
+
+def add_time_table(request, school_pk, classroom_pk):
+    if request.method == 'POST':
+        form = TimeTableForm(request.POST, classroom_pk=classroom_pk)
+        if form.is_valid():
+            form.save()
+            return redirect('schools:classrooms:show', school_pk, classroom_pk)
+        else:
+            return show_classroom(request, school_pk, classroom_pk, time_table_form=form)
+    return redirect('schools:classrooms:show', school_pk, classroom_pk)

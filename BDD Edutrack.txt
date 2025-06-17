@@ -38,6 +38,7 @@ Course:
 	id
 	name
 	coef
+	teacher_id  --new
 	class_id
 
 TimeTable :

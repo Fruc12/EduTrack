@@ -137,20 +137,21 @@
                         <div class="tab-pane fade" id="matieres">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h5>Matières enseignées</h5>
-                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addSubjectModal">
+                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addCourseModal">
                                     <i class="feather icon-plus"></i> Ajouter
                                 </button>
                             </div>
                             <div class="row">
-                                {% for i in "12" %}
-                                <div class="col-sm-6 col-md-3 mb-3">
-                                    <div class="card subject-card">
+                                {% for course in courses %}
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="card subject-card h-100">
                                         <div class="card-body text-center">
-                                            <h6>Nom de matière {{ i }}</h6>
-                                            <p class="text-muted">Professeur {{ i }}</p>
-                                            <a href="#" class="btn btn-outline-primary btn-sm">
-                                            Accéder
-                                        </a>
+                                            <div class="mb-3">
+                                                <i class="feather icon-book f-30 text-c-blue"></i>
+                                            </div>
+                                            <h5>{{ course.name }}</h5>
+{#                                            <p class="text-muted">M. Konan</p>#}
+                                            <a href="#"><span class="badge badge-primary">Accéder</span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -166,34 +167,24 @@
                                 </button>
                             </div>
                             <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead>
+                                <table class="table table-bordered text-center align-middle">
+                                    <thead class="thead-dark">
                                         <tr>
                                             <th>Heures</th>
-                                            <th>Lundi</th>
-                                            <th>Mardi</th>
-                                            <th>Mercredi</th>
-                                            <th>Jeudi</th>
-                                            <th>Vendredi</th>
+                                            {% for day in DAYS|slice:"1:" %}
+                                                <th>{{ day.1 }}</th>
+                                            {% endfor %}
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for timeTable in timeTables %}
                                         <tr>
-                                            <td>08h-09h</td>
-                                            <td>Math</td>
-                                            <td>Français</td>
-                                            <td>Sport</td>
-                                            <td>Histoire</td>
-                                            <td>Sciences</td>
+                                            <td>{{ timeTable.begin_time|time:"H:i" }} - {{ timeTable.end_time|time:"H:i" }}</td>
+                                            <td class="bg-light">
+                                                <strong>{{ timeTable.course.name }}</strong><br>
+                                            </td>
                                         </tr>
-                                        <tr>
-                                            <td>09h-10h</td>
-                                            <td>Anglais</td>
-                                            <td>Math</td>
-                                            <td>Art</td>
-                                            <td>Musique</td>
-                                            <td>SVT</td>
-                                        </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -216,7 +207,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="POST" action="{% comment %}{% url 'schools:classrooms:add_student' classroom.school_year.school.pk classroom.pk %}{% endcomment %}">
+                    <form method="POST" action="{% url 'schools:classrooms:add_student' classroom.school_year.school.pk classroom.pk %}">
                         {% csrf_token %}
                         <div class="modal-body">
                                 <div class="form-group">
@@ -245,7 +236,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="POST" action="{% comment %}{% url 'schools:classrooms:add_parent' classroom.school.pk classroom.pk %}{% endcomment %}">
+                    <form method="POST" action="{% url 'schools:classrooms:add_parent' classroom.school_year.school.pk classroom.pk %}">
                         {% csrf_token %}
                         <div class="modal-body">
                             <div class="form-group">
@@ -277,7 +268,7 @@
         </div>
 
         <!-- Modal Ajout Matière -->
-        <div class="modal fade" id="addSubjectModal" tabindex="-1" role="dialog">
+        <div class="modal fade" id="addCourseModal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -286,20 +277,19 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="POST" action="#">
-                            {% csrf_token %}
+                    <form method="POST" action="{% url 'schools:classrooms:add_course' classroom.school_year.school.pk classroom.pk %}">
+                        {% csrf_token %}
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Nom de la matière</label>
-                                <input type="text" class="form-control" name="subject_name" required>
+                                {{ courseForm.name }}
                             </div>
                             <div class="form-group">
-                                <label>Professeur</label>
-                                <input type="text" class="form-control" name="teacher_name" required>
+                                {{ courseForm.coef }}
                             </div>
+                            <input type="hidden" name="classroom" value="{{ classroom.pk }}">
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                            <input type="submit" class="btn btn-primary" value="Ajouter">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                         </div>
                     </form>
@@ -317,39 +307,28 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="POST" action="#">
-                            {% csrf_token %}
+                    <form method="POST" action="{% url 'schools:classrooms:add_time_table' classroom.school_year.school.pk classroom.pk %}">
+                        {% csrf_token %}
                         <div class="modal-body">
                             <div class="form-group">
-                                <label>Matière</label>
-                                <select class="form-control" name="subject">
-                                    <option value="">-- Choisir une matière --</option>
-                                    <option>Mathématiques</option>
-                                    <option>Français</option>
-                                    <option>Histoire</option>
-                                </select>
+                                {{ timeTableForm.course }}
                             </div>
                             <div class="form-group">
-                                <label>Jour</label>
-                                <select class="form-control" name="day">
-                                    <option>Lundi</option>
-                                    <option>Mardi</option>
-                                    <option>Mercredi</option>
-                                    <option>Jeudi</option>
-                                    <option>Vendredi</option>
-                                </select>
+                                {{ timeTableForm.day }}
                             </div>
-                            <div class="form-group">
-                                <label>Heure de début</label>
-                                <input type="time" class="form-control" name="start_time">
-                            </div>
-                            <div class="form-group">
-                                <label>Heure de fin</label>
-                                <input type="time" class="form-control" name="end_time">
+                            <div class="row">
+                                <div class="col form-group">
+                                    <label for="id_begin_time">Heure de début</label>
+                                    {{ timeTableForm.begin_time }}
+                                </div>
+                                <div class="col form-group">
+                                    <label for="id_end_time">Heure de fin</label>
+                                    {{ timeTableForm.end_time }}
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Ajouter</button>
+                            <input type="submit" class="btn btn-primary" value="Ajouter">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                         </div>
                     </form>
