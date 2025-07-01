@@ -91,6 +91,7 @@ def register_mailer(user):
     code = randint(0, 999999)
     code = f"{code:06}"
     validation = Validation(code=code, user=user)
+    validation.expires_at=timezone.now()+timezone.timedelta(minutes=10)
     subject = "Edutrack Validation Inscription"
     body = render_to_string("mails/register-validation.html", {"validation":validation})
     to = [user.email]

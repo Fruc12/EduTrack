@@ -4,7 +4,7 @@ from schools.models import School, SchoolYear
 
 
 class Classroom(models.Model):
-    LEVELS = [ ('', 'Veuillez choisir un niveau'),
+    LEVELS = [ ('', 'Veuillez choisir un niveau...'),
                ('6','Sixième'),('5','Cinquième'),('4','Quatrième'),('3','Troisième'),
                ('2','Seconde'),('1','Première'),('Tle','Terminale')
     ]

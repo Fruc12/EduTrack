@@ -13,7 +13,7 @@ from parents.models import Parent, Student
 from schools.models import School, SchoolYear
 from users.models import User
 from .forms import ClassroomForm, CourseForm, TimeTableForm
-from .models import Classroom, Course
+from .models import Classroom, Course, TimeTable
 from schools.forms import SchoolYearForm
 from schools.forms import ChangeYearForm
 
@@ -70,7 +70,7 @@ def show_classroom(request, school_pk, classroom_pk, course_form=None, time_tabl
         "timeTableForm": TimeTableForm(classroom_pk=classroom_pk) if time_table_form is None else time_table_form,
         "courses": courses,
         "timeTables": time_tables,
-        "DAYS": time_tables[0].DAYS
+        "DAYS": TimeTable.DAYS
 
     }
     return render(request, "classrooms/classroom-details.html", context)

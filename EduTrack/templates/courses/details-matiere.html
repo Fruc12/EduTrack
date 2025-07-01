@@ -1,0 +1,402 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Détails Matière {% endblock %}
+
+{% block content %}
+<div class="pcoded-main-container">
+    <div class="pcoded-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <div>
+                <div class="page-header-title">
+                    <h5 class="m-b-10">Mathématiques</h5>
+                </div>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="#">
+                            <i class="feather icon-home"></i>
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#!">Mes écoles / École Primaire / CM2 A / Mathématiques</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <!-- Info Matière -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Informations sur la matière</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 text-center">
+                                <div class="mb-3">
+                                    <i class="feather icon-book f-40 text-c-blue"></i>
+                                </div>
+                                <h5>Matière</h5>
+                                <p class="text-muted">Mathématiques</p>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div class="mb-3">
+                                    <i class="feather icon-user f-40 text-c-green"></i>
+                                </div>
+                                <h5>Professeur</h5>
+                                <p class="text-muted">M. Konan</p>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div class="mb-3">
+                                    <i class="feather icon-clock f-40 text-c-yellow"></i>
+                                </div>
+                                <h5>Heures/semaine</h5>
+                                <p class="text-muted">4h</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation par onglets -->
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#notes">
+                                    <i class="feather icon-file-text mr-2"></i>Gestion des notes
+                                </a>
+                            </li>
+{#                            <li class="nav-item">#}
+{#                                <a class="nav-link" data-toggle="tab" href="#presence">#}
+{#                                    <i class="feather icon-check-circle mr-2"></i>Liste de présence#}
+{#                                </a>#}
+{#                            </li>#}
+                        </ul>
+                    </div>
+                    <div class="card-body tab-content">
+                        <!-- Onglet Notes -->
+                        <div class="tab-pane fade show active" id="notes">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5>Gestion des notes</h5>
+                                <button class="btn btn-sm btn-primary" data-toggle="modal" data-target="#addEvaluationModal">
+                                    <i class="feather icon-plus"></i> Ajouter une évaluation
+                                </button>
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover w-100" style="border-collapse: collapse;">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2" style="width: 15%; border-right: 1px solid #dee2e6; vertical-align: middle;">ÉLÈVES</th>
+                                            <th colspan="4" style="border-right: 1px solid #dee2e6; text-align: center;">INTERROGATIONS</th>
+                                            <th colspan="2" style="border-right: 1px solid #dee2e6; text-align: center;">DEVOIRS</th>
+                                            <th colspan="2" style="text-align: center;">MOYENNE</th>
+                                        </tr>
+                                        <tr>
+                                            <!-- Interrogations -->
+                                            <th style="width: 8%; border-right: 1px solid #dee2e6; text-align: center;">I1</th>
+                                            <th style="width: 8%; border-right: 1px solid #dee2e6; text-align: center;">I2</th>
+                                            <th style="width: 8%; border-right: 1px solid #dee2e6; text-align: center;">I3</th>
+                                            <th style="width: 8%; border-right: 1px solid #dee2e6; text-align: center;">I4</th>
+                                            
+                                            <!-- Devoirs -->
+                                            <th style="width: 8%; border-right: 1px solid #dee2e6; text-align: center;">D1</th>
+                                            <th style="width: 8%; border-right: 1px solid #dee2e6; text-align: center;">D2</th>
+                                            
+                                            <!-- Moyennes -->
+                                            <th style="width: 10%; border-right: 1px solid #dee2e6; text-align: center;">NON COEFF.</th>
+                                            <th style="width: 10%; text-align: center;">COEFFIÉE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in "12345" %}
+                                        <tr>
+                                            <td style="border-right: 1px solid #dee2e6;">Nom {{ i }}</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="border-right: 1px solid #dee2e6; text-align: center;">-</td>
+                                            <td style="text-align: center;">-</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Onglet Présence -->
+                        <div class="tab-pane fade" id="presence">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5>Liste de présence - {{ "now"|date:"d/m/Y" }}</h5>
+                                <div>
+                                    <input type="date" class="form-control form-control-sm d-inline-block mr-2" style="width: auto;">
+                                    <button class="btn btn-sm btn-primary" id="savePresenceBtn">
+                                        <i class="feather icon-save"></i> Enregistrer
+                                    </button>
+                                </div>
+                            </div>
+                            <form id="presenceForm">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th>Nom de l'élève</th>
+                                                <th class="text-center">Présent</th>
+                                                <th class="text-center">Absent</th>
+                                                <th class="text-center">Retard</th>
+                                                <th>Commentaire</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Étudiants fictifs -->
+                                            <tr>
+                                                <td class="text-center">1</td>
+                                                <td>Jean Dupont</td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_1" id="present_1" 
+                                                               value="present" checked>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_1" id="absent_1" 
+                                                               value="absent">
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_1" id="late_1" 
+                                                               value="late">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm" 
+                                                           name="comment_1" placeholder="Remarque...">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">2</td>
+                                                <td>Marie Martin</td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_2" id="present_2" 
+                                                               value="present" checked>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_2" id="absent_2" 
+                                                               value="absent">
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_2" id="late_2" 
+                                                               value="late">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm" 
+                                                           name="comment_2" placeholder="Remarque...">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">3</td>
+                                                <td>Pierre Durand</td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_3" id="present_3" 
+                                                               value="present">
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_3" id="absent_3" 
+                                                               value="absent" checked>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_3" id="late_3" 
+                                                               value="late">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm" 
+                                                           name="comment_3" placeholder="Malade">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">4</td>
+                                                <td>Sophie Lambert</td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_4" id="present_4" 
+                                                               value="present">
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_4" id="absent_4" 
+                                                               value="absent">
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_4" id="late_4" 
+                                                               value="late" checked>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm" 
+                                                           name="comment_4" placeholder="Arrivée à 9h15">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-center">5</td>
+                                                <td>Thomas Moreau</td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_5" id="present_5" 
+                                                               value="present" checked>
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_5" id="absent_5" 
+                                                               value="absent">
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input presence-radio" type="radio" 
+                                                               name="presence_5" id="late_5" 
+                                                               value="late">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control form-control-sm" 
+                                                           name="comment_5" placeholder="">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ Main Content ] end -->
+    </div>
+</div>
+
+<!-- Modal pour ajouter une évaluation -->
+<div class="modal fade" id="addEvaluationModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajouter une évaluation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="evaluationForm" method="POST" action="{% url 'courses:index' course.pk %}">
+                <div class="modal-body">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ scoreForm.type }}
+                            <span class="text-danger">{{ scoreForm.type.errors }}</span>
+                        </div>
+                        <div class="form-group">
+                            {{ scoreForm.student }}
+                            <span class="text-danger">{{ scoreForm.student.errors }}</span>
+                        </div>
+                        <div class="form-group">
+                            {{ scoreForm.value }}
+                            <span class="text-danger">{{ scoreForm.value.errors }}</span>
+                        </div>
+                        <input type="hidden" name="course" value="{{ course.id }}">
+                        <input type="hidden" name="ponderation" value="1">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <input type="submit" class="btn btn-primary" value="Enregistrer">
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<style>
+    /* Style pour les tableaux */
+    .table-responsive {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    table {
+        table-layout: fixed;
+    }
+    th, td {
+        padding: 8px 12px;
+    }
+    
+    /* Style pour le modal */
+    .student-notes-container {
+        border: 1px solid #dee2e6;
+        padding: 10px;
+        border-radius: 4px;
+    }
+    
+    /* Style pour les boutons radio */
+    .form-check-input {
+        width: 1.2em;
+        height: 1.2em;
+        cursor: pointer;
+    }
+    .form-check-input.bg-success:checked {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+    .form-check-input.bg-danger:checked {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+    .form-check-input.bg-warning:checked {
+        background-color: #ffc107;
+        border-color: #ffc107;
+    }
+    .table th {
+        white-space: nowrap;
+    }
+</style>
+{% endblock javascripts %}

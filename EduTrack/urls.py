@@ -23,6 +23,9 @@ urlpatterns = [
     path('accounts/', include('users.urls')),
     path('parents/', include('parents.urls')),
     path('schools/', include('schools.urls')),
+    # path('<int:classroom_pk>/courses/', include('classrooms.urls')),
+    path('courses/', include('courses.urls')),
+
     # path('ecoles/<int:school_id>/classes/<int:classroom_id>/matieres/<int:subject_id>/', 
     #      views.detail_matiere, 
         #  name='detail-matiere'),

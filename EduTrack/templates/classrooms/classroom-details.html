@@ -84,9 +84,9 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#emploi-du-temps">
+                                <button onclick="setTable()" class="nav-link" data-toggle="tab" href="#emploi-du-temps">
                                     <i class="feather icon-calendar mr-2"></i>Emploi du temps
-                                </a>
+                                </button>
                             </li>
                         </ul>
                     </div>
@@ -151,7 +151,7 @@
                                             </div>
                                             <h5>{{ course.name }}</h5>
 {#                                            <p class="text-muted">M. Konan</p>#}
-                                            <a href="#"><span class="badge badge-primary">Accéder</span></a>
+                                            <a href="{% url 'courses:index' course.pk %}"><span class="badge badge-primary">Accéder</span></a>
                                         </div>
                                     </div>
                                 </div>
@@ -166,29 +166,9 @@
                                     <i class="feather icon-plus"></i> Ajouter
                                 </button>
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-bordered text-center align-middle">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>Heures</th>
-                                            {% for day in DAYS|slice:"1:" %}
-                                                <th>{{ day.1 }}</th>
-                                            {% endfor %}
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for timeTable in timeTables %}
-                                        <tr>
-                                            <td>{{ timeTable.begin_time|time:"H:i" }} - {{ timeTable.end_time|time:"H:i" }}</td>
-                                            <td class="bg-light">
-                                                <strong>{{ timeTable.course.name }}</strong><br>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
+                            <div id="calendar"></div>
                         </div>
+
 
                     </div>
                 </div>
@@ -340,7 +320,20 @@
 {% endblock %}
 
 {% block javascripts %}
+<script src="/static/assets/js/fullcalendar/dist/index.global.min.js"></script>
 <script>
+    // Prépare les events en JS depuis ton context Django (timeTables)
+    const timetableEvents = [
+        {% for t in timeTables %}
+            {
+                title: "{{ t.course.name|escapejs }}",
+                daysOfWeek: [{{ t.day|add:1 }}], // FullCalendar: lundi=1
+                startTime: "{{ t.begin_time|time:'H:i' }}",
+                endTime: "{{ t.end_time|time:'H:i' }}",
+            },
+        {% endfor %}
+    ];
+
     function setAddParentId(parentId) {
         const input = document.getElementById('id_student');
         input.value = parentId;
@@ -350,5 +343,41 @@
             url: '//cdn.datatables.net/plug-ins/2.3.0/i18n/fr-FR.json',
         },
     });
+
+    function setTable() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = null;
+    
+        function renderCalendar() {
+            if (calendar) {
+                calendar.destroy();
+            }
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                allDaySlot: false,
+                slotMinTime: "07:00:00",
+                slotMaxTime: "19:00:00",
+                headerToolbar: false, // retire toute la barre d’entête
+                firstDay: 1,
+                locale: 'fr',
+                height: 600,
+                events: timetableEvents,
+                editable: false,
+                nowIndicator: true,
+                slotLabelFormat: {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                },
+                hiddenDays: [0], // cache le dimanche
+                dayHeaderFormat: { weekday: 'long' }, // affiche seulement Lundi, Mardi, etc.
+            });
+            calendar.render();
+        }
+    
+        // Affiche le calendrier au premier affichage
+        renderCalendar();  
+    }
+
 </script>
 {% endblock javascripts %}

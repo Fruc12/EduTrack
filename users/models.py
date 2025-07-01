@@ -19,4 +19,4 @@ class Validation(models.Model):
     code = models.CharField(max_length=128)
     user = models.OneToOneField (User, on_delete=models.CASCADE, related_name='validation')
     created_at = models.DateTimeField(default=timezone.now)
-    expires_at = models.DateTimeField(default=timezone.now()+timezone.timedelta(minutes=10))
+    expires_at = models.DateTimeField()
